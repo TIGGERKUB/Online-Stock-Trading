@@ -236,20 +236,20 @@ a.article, a.article:hover {
 
 
 
-.account, .tt-query, .tt-hint {
+.searchStock, .tt-query, .tt-hint {
 	border: 2px solid #CCCCCC;
 	border-radius: 8px;
-	font-size: 24px;
-	height: 30px;
+	font-size: 18px;
+	height: 40px;
 	line-height: 30px;
 	outline: medium none;
 	padding: 8px 12px;
-	width: 396px;
+	width: 280px;
 }
-.account {
+.searchStock {
 	background-color: #FFFFFF;
 }
-.account:focus {
+.searchStock:focus {
 	border: 2px solid #0097CF;
 }
 .tt-query {
@@ -265,12 +265,12 @@ a.article, a.article:hover {
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 	margin-top: 12px;
 	padding: 8px 0;
-	width: 422px;
+	width: 280px;
 }
 .tt-suggestion {
-	font-size: 24px;
+	font-size: 18px;
 	line-height: 24px;
-	padding: 3px 20px;
+    padding: 3px 20px;
 }
 .tt-suggestion.tt-is-under-cursor {
 	background-color: #0097CF;

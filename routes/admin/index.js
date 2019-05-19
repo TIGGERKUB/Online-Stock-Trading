@@ -38,11 +38,31 @@ router.get("/show/account",function(req,res){
         res.render("admin/show/account",{accounts:foundAccount});
     });
 })
-
+router.get('/search',function(req,res){
+    connection.query('SELECT Broker_Symbol from trader_account where Broker_Symbol like "%'+req.query.key+'%"', function(err, rows, fields) {
+          if (err) throw err;
+        var data=[];
+        for(i=0;i<rows.length;i++)
+          {
+            console.log(rows[i].Broker_Symbol);
+            data.push(rows[i].Broker_Symbol);
+          }
+          res.end(JSON.stringify(data));
+        });
+    });
 
 router.post("/show/account",function(req,res){
     var Account_type = req.body.Account_type;
-    var findAccount = "SELECT * FROM trader_account WHERE Account_type = '"+Account_type+"'";
+    var Broker_Symbol = req.body.searchStock;
+    if(Account_type && Broker_Symbol){
+        var findAccount = "SELECT * FROM trader_account WHERE Account_type = '"+Account_type+"' AND Broker_Symbol ='"+Broker_Symbol+"'";
+    }else if(Account_type && !Broker_Symbol){
+        var findAccount = "SELECT * FROM trader_account WHERE Account_type = '"+Account_type+"'";
+    }else if(!Account_type && Broker_Symbol){
+        var findAccount = "SELECT * FROM trader_account WHERE Broker_Symbol = '"+Broker_Symbol+"'";
+    }else{
+        var findAccount = "SELECT * FROM trader_account WHERE Account_type = '"+Account_type+"'";
+    }
     connection.query(findAccount,function(err,foundAccount){
         if(err){
             throw err;
@@ -50,6 +70,7 @@ router.post("/show/account",function(req,res){
         res.render("admin/show/account",{accounts:foundAccount});
     });
 })
+
 
 router.get("/show/transaction",function(req,res){
     var findTransaction = "SELECT * FROM transaction"
