@@ -1,0 +1,47 @@
+<% include ../partials/header %>
+<% include ../partials/profilesHead %>
+
+<H1>New Accounts</H1>
+<hr>
+<div class="container">
+    <br>
+    <br>
+    <form class="register-box" action="/profiles/accounts/new" method="POST">
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Broker</label>
+            <div class="col-sm-6">
+                <select class="form-control" name="broker">
+                    <% brokers.forEach(function(broker){ %>
+                        <option value="<%=broker.Broker_Symbol%>"><%=broker.Broker_Symbol%></option>
+                        <% }); %>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Account Type</label>
+            <div class="col-sm-6">
+                <select class="form-control" name="Account_type">
+                    <option value="Cash_Account">Cash Account</option>
+                    <option value="Cash_Balance">Cash Balance</option>
+                    <option value="Credit_Balance">Credit Balance</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">PIN</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" placeholder="Password" name="PIN" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Confirm PIN</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" placeholder="Confirm Password" required>
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary btn-block" type="submit">Open Account</button>
+    </form>
+    <div>
+        <% include ../partials/profilesFoot %>
+        <% include ../partials/footer %>

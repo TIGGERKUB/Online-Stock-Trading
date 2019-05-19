@@ -1,0 +1,33 @@
+<% include ../../partials/adminHead %>
+<br>
+
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Trader_Personal_ID</th>
+        <th scope="col">Username</th>
+        <th scope="col">Password</th>
+        <th scope="col">Trader_Fname</th>
+        <th scope="col">Trader_Lname</th>
+        <th scope="col">Trader_Age</th>
+        <th scope="col">Trader_Address</th>
+        <th scope="col">Trader_Email</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% members.forEach(function(member){ %>
+      <tr>
+        <th scope="row"><%=member.Trader_Personal_ID%></th>
+        <td><%=member.Username%></td>
+        <td><%=member.Password%></td>
+        <td><%=member.Trader_Fname%></td>
+        <td><%=member.Trader_Lname%></td>
+        <td><%=member.Trader_Age%></td>
+        <td><%=member.Trader_Address%></td>
+        <td><%=member.Trader_Email%></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+<% include ../../partials/adminFoot %>

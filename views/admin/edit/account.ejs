@@ -1,0 +1,61 @@
+<% include ../../partials/adminHead %>
+<br>
+<H1>Edit <%=account.Account_ID%> Accounts</H1>
+<hr>
+<div class="container">
+    <br>
+    <br>
+    <form class="register-box" action="/admin/accounts/update/<%=account.Account_ID%>?_method=PUT" method="POST">
+        
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Account Balance</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" value="<%=account.Account_Balance%>" name="Account_Balance">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Account Type</label>
+            <div class="col-sm-6">
+                <select class="form-control" name="Account_type">
+                    <option value="Cash_Account">Cash Account</option>
+                    <option value="Cash_Balance">Cash Balance</option>
+                    <option value="Credit_Balance">Credit Balance</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Personal ID</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" value="<%=account.Trader_Personal_ID%>"
+                    name="Trader_Personal_ID">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label"> Broker Symbol</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" value="<%=account.Broker_Symbol%>" name="Broker_Symbol">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Old PIN</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" value="<%=account.PIN%>" name="oldPIN">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">New PIN</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" placeholder="new PIN" name="newPIN">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Confirm NEW PIN</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" placeholder="Confirm Password">
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary btn-block" type="submit">Edit</button>
+    </form>
+    <div>
+        <% include ../../partials/adminFoot %>

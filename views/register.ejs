@@ -1,0 +1,85 @@
+<% include ./partials/header %>
+<br>
+<br>
+<div class="container">
+    <h1>Register Form</h1>
+    <br>
+    <form class="register-box" action="/register" method="POST">
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">personal ID</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" placeholder="personal ID" name="personal_ID" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Username</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" placeholder="Username" name="username" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Password</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" placeholder="Password" name="password" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Confirm Password</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" placeholder="Confirm Password" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">First Name</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" placeholder="Firstname" name="FirstName" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Last Name</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" placeholder="Lastname" name="LastName" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Email</label>
+            <div class="col-sm-6">
+                <input type="email" class="form-control" placeholder="test@example.com" name="email" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Phone</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" placeholder="081-234-XXXX" name="phone" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Age</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" placeholder="age" name="age" min="20" step="1" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Address</label>
+            <div class="col-sm-6">
+                <textarea class="form-control" rows="2" name="address"></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Bank Name</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" placeholder="Bankname" name="bankName" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Bank Account Number</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" name="bank_Account" required>
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary btn-block" type="submit">Sign Up</button>
+    </form>
+    <div>
+
+        <% include ./partials/footer %>

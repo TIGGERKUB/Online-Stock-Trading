@@ -1,0 +1,71 @@
+<% include ../partials/header %>
+<% include ../partials/profilesHead %>
+
+<h1 class="display-1">My Accounts</h1>
+<hr>
+<div class="row" style="display:flex; flex-wrap:wrap;">
+    <% accounts.forEach(function(account){ %>
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+        <div class="card py-2 text-light bg-dark" id="account-card">
+            <div class="card-body">
+                <div class="row card-title">
+                    <div class="col">
+                        <h3><%= account.Account_ID %></h3>
+                    </div>
+                    <div class="col text-right">
+                        <a href="/profiles/accounts/<%=account.Account_ID%>/edit">
+                            <i class="fa fa-cog" aria-hidden="true" style="font-size: 36px;color:#FFCA4F;"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <h6>Account No:</h6>
+                    </div>
+                    <div class="col">
+                        <p class="font-weight-normal"><%=account.Account_ID%></p>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-6">
+                        <h6>Account Type:</h6>
+                    </div>
+                    <div class="col">
+                        <p class="font-weight-normal"><%=account.Account_Type%></p>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-8">
+                        <h6>Account Balance:</h6>
+                    </div>
+                    <div class="col">
+                        <p class="font-weight-normal"><%=account.Account_Balance%>$</p>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-8">
+                        <h6>Broker:<h6>
+                    </div>
+                    <div class="col">
+                        <p class="font-weight-normal"><%=account.Broker_Symbol%></p>
+                    </div>
+                </div>
+
+                <div class="float-right">
+                    <form action="/profiles/accounts/<%=account.Account_ID%>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger" aria-hidden="true">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% }); %>
+
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+        <a class="" href="/profiles/accounts/new">
+            <i class="fa fa-plus fa-4x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+</div>
+</div>
+</div>
+
+<% include ../partials/profilesFoot %> <% include ../partials/footer %>

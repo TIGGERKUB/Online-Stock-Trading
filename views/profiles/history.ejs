@@ -1,0 +1,41 @@
+<% include ../partials/header %>
+<% include ../partials/profilesHead %>
+<hr>
+<H1>Transaction History</H1>
+<hr>
+<div class="container">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">DD/MM/YYYY</th>
+                <th scope="col">Type</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Account ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% transactions.forEach(function(transaction){ %>
+                <% if (transaction.Transaction_Type === 'Deposit') { %>
+                    <tr class="table-success">
+                <% } else { %>
+                    <tr class="table-danger">
+                <% } %>
+                <td><%=transaction.Transaction_Timestamp.toDateString()%></td>
+                <td><%=transaction.Transaction_Type%></td>
+                <td><%=transaction.Transaction_Amount%></td>
+                <td><%=transaction.Account_ID%></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+
+
+<br><br>
+<hr>
+<H1>Order stock History</H1>
+<hr>
+
+<% include ../partials/profilesFoot %>
+<% include ../partials/footer %>

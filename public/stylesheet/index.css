@@ -1,0 +1,73 @@
+#graph-1{
+	width: 48%;
+	height: 300px;
+}
+#graph-2{
+	width: 48%;
+	height: 300px;
+}
+
+.thumbnail{
+	padding: 3px  3x;
+	margin: 10px 10px;
+}
+
+.border{
+	background-color:rgb(224, 224, 224);
+}
+
+#show111{
+    display: inline;
+}
+
+#sidebar{
+	width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    background: #222327;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+
+.tt-query, .tt-hint {
+	border: 2px solid #CCCCCC;
+	border-radius: 8px;
+	font-size: 24px;
+	height: 30px;
+	line-height: 30px;
+	outline: medium none;
+	padding: 8px 12px;
+	width: 396px;
+}
+
+.tt-query {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.tt-hint {
+	color: #999999;
+}
+.markerData,.tt-dropdown-menu {
+	background-color: #FFFFFF;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 8px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	margin-top: 12px;
+	padding: 8px 0;
+	width: 400px;
+}
+.tt-suggestion {
+	font-size: 24px;
+	line-height: 24px;
+	padding: 3px 20px;
+}
+.tt-suggestion.tt-is-under-cursor {
+	background-color: #0097CF;
+	color: #FFFFFF;
+}
+.tt-suggestion p {
+	margin: 0;
+}
