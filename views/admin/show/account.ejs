@@ -7,6 +7,11 @@
   <form class="form-inline" action="/admin/show/account" method="POST">
     <div class="form-group">
       <div class="col-sm-3">
+        <input class="searchAccountID searchBox tt-query" type="text" placeholder="Account ID" name="searchPersonalID">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-3">
         <select class="form-control" name="Account_type">
           <option value="" disabled selected hidden>Account type...</option>
           <option value="Cash_Account">Cash Account</option>
@@ -17,12 +22,13 @@
     </div>
     <div class="form-group">
       <div class="col-sm-3">
-        <input class="form-control" type="number" placeholder="Personal ID">
+        <input class="searchPersonalID searchBox tt-query" type="text" placeholder="Personal ID"
+          name="searchPersonalID">
       </div>
     </div>
     <div class="form-group">
       <div class="col-sm-3">
-          <input class="searchBroker tt-query" type="text" placeholder="Search Stock Symbol" name="searchStock">
+        <input class="searchBroker searchBox tt-query" type="text" placeholder="Stock Symbol" name="searchStock">
       </div>
     </div>
     <button class="btn btn-outline-secondary" type="submit">Search</button>

@@ -236,7 +236,7 @@ a.article, a.article:hover {
 
 
 
-.searchStock, .tt-query, .tt-hint {
+.searchBox, .tt-query, .tt-hint {
 	border: 2px solid #CCCCCC;
 	border-radius: 8px;
 	font-size: 18px;
@@ -244,12 +244,12 @@ a.article, a.article:hover {
 	line-height: 30px;
 	outline: medium none;
 	padding: 8px 12px;
-	width: 280px;
+	width: 200px;
 }
-.searchStock {
+.searchBox {
 	background-color: #FFFFFF;
 }
-.searchStock:focus {
+.searchBox:focus {
 	border: 2px solid #0097CF;
 }
 .tt-query {
@@ -265,7 +265,7 @@ a.article, a.article:hover {
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 	margin-top: 12px;
 	padding: 8px 0;
-	width: 280px;
+	width: 200px;
 }
 .tt-suggestion {
 	font-size: 18px;

@@ -13,6 +13,7 @@ var profiles = require("./routes/user/profiles");
 var trade = require("./routes/user/trade");
 var auth = require("./routes/auth");
 var admin = require("./routes/admin/index");
+var adminAccount = require("./routes/admin/account");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine","ejs");
@@ -38,6 +39,7 @@ app.use("/market_data",marketData);
 app.use("/profiles",profiles);
 app.use("/trade",trade);
 app.use("/admin",admin);
+app.use("/admin",adminAccount);
 
 app.get("/",function(req,res){
     res.render("home/index");
