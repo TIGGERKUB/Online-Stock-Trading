@@ -44,7 +44,6 @@ router.get('/search',function(req,res){
         var data=[];
         for(i=0;i<rows.length;i++)
           {
-            console.log(rows[i].Broker_Symbol);
             data.push(rows[i].Broker_Symbol);
           }
           res.end(JSON.stringify(data));
@@ -61,7 +60,7 @@ router.post("/show/account",function(req,res){
     }else if(!Account_type && Broker_Symbol){
         var findAccount = "SELECT * FROM trader_account WHERE Broker_Symbol = '"+Broker_Symbol+"'";
     }else{
-        var findAccount = "SELECT * FROM trader_account WHERE Account_type = '"+Account_type+"'";
+        var findAccount = "SELECT * FROM trader_account ";
     }
     connection.query(findAccount,function(err,foundAccount){
         if(err){
