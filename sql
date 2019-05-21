@@ -1,0 +1,1 @@
+CREATE VIEW Stock_Data1 AS SELECT DATE(Order_Time) AS date, Stock_Symbol,MIN(TIME(Order_Time)) AS MinTime ,MAX(TIME(Order_Time)) AS MaxTime FROM stock_order GROUP BY Stock_Symbol,DATE(Order_Time)
