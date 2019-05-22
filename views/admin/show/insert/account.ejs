@@ -1,68 +1,126 @@
 <% include ../../../partials/adminHead %>
+<br>
+<form method="post" action="/admin/show/insert/account">
+  <div class="form-group fieldGroup">
+    <div class="input-group">
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Column</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PIN</td>
+            <td><input class="form-control" style="width:50%" type="text" name="PIN[]"></td>
+          </tr>
+          <tr>
+            <td>Account Balance</td>
+            <td><input class="form-control" style="width:50%" type="text" name="Account_Balance[]"></td>
+          </tr>
+          <tr>
+            <td>Account Type</td>
+            <td>
+              <select class="form-control" style="width:50%;" name="Account_Type[]">
+                <option value="Cash_Account">Cash Account</option>
+                <option value="Cash_Balance">Cash Balance</option>
+                <option value="Credit_Balance">Credit Balance</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Personal ID</td>
+            <td>
+              <div style="overflow: auto;">
+                <select class="form-control" style="width:50%;" name="Trader_Personal_ID[]">
+                  <% personalIDs.forEach(function(personalID){ %>
+                  <option value="<%=personalID.Trader_Personal_ID%>"><%=personalID.Trader_Personal_ID%></option>
+                  <% }); %>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Broker Symbol</td>
+            <td>
+              <select class="form-control" style="width:50%" name="Broker_Symbol[]">
+                <% stocks.forEach(function(stock){ %>
+                <option value="<%=stock.Broker_Symbol%>"><%=stock.Broker_Symbol%></option>
+                <% }); %>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="input-group-addon">
+        <a href="javascript:void(0)" class="btn btn-success addMore"><span class="glyphicon glyphicon glyphicon-plus"
+            aria-hidden="true"></span> Add</a>
+      </div>
+    </div>
+  </div>
+  <input type="submit" name="submit" class="btn btn-primary" value="SUBMIT" />
+</form>
 
-<br>
-<!--Search-->
-<div class="bg-dark text-white">
-  <br>
-  
-  <br>
+<!-- copy of input fields group -->
+<div class="form-group fieldGroupCopy" style="display: none;">
+  <div class="input-group">
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Column</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PIN</td>
+          <td><input class="form-control" style="width:50%" type="text" name="PIN[]"></td>
+        </tr>
+        <tr>
+          <td>Account Balance</td>
+          <td><input class="form-control" style="width:50%" type="text" name="Account_Balance[]"></td>
+        </tr>
+        <tr>
+          <td>Account Type</td>
+          <td>
+            <select class="form-control" style="width:50%;" name="Account_Type[]">
+              <option value="Cash_Account">Cash Account</option>
+              <option value="Cash_Balance">Cash Balance</option>
+              <option value="Credit_Balance">Credit Balance</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Personal ID</td>
+          <td>
+            <div style="overflow: auto;">
+              <select class="form-control" style="width:50%;" name="Trader_Personal_ID[]">
+                <% personalIDs.forEach(function(personalID){ %>
+                <option value="<%=personalID.Trader_Personal_ID%>"><%=personalID.Trader_Personal_ID%></option>
+                <% }); %>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Broker Symbol</td>
+          <td>
+            <select class="form-control" style="width:50%" name="Broker_Symbol[]">
+              <% stocks.forEach(function(stock){ %>
+              <option value="<%=stock.Broker_Symbol%>"><%=stock.Broker_Symbol%></option>
+              <% }); %>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="input-group-addon">
+      <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove"
+          aria-hidden="true"></span> Remove</a>
+    </div>
+  </div>
 </div>
-<br>
-<table class="table table-dark">
-  <thead>
-    <tr>
-      <td scope="col"></td>
-      <th scope="col">Account_ID</th>
-      <th scope="col">PIN</th>
-      <th scope="col">Account_Balance</th>
-      <th scope="col">Account_Type</th>
-      <th scope="col">Trader_Personal_ID</th>
-      <th scope="col">Broker_Symbol</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% accounts.forEach(function(account){ %>
-    <tr>
-      <td><input type="checkbox" name="checkAll" class="checkSingle"></td>
-      <th scope="row"><%=account.Account_ID%></th>
-      <td><%=account.PIN%></td>
-      <td><%=account.Account_Balance%></td>
-      <td><%=account.Account_Type%></td>
-      <td><%=account.Trader_Personal_ID%></td>
-      <td><%=account.Broker_Symbol%></td>
-      <td>
-        <form action="/admin/accounts/<%=account.Account_ID%>/edit" method="GET">
-          <button class="btn btn-warning" aria-hidden="true"><i class="fa fa-wrench" aria-hidden="true"></i></button>
-        </form>
-      </td>
-      <td>
-        <form action="/admin/accounts/<%=account.Account_ID%>?_method=DELETE" method="POST">
-          <button class="btn btn-danger" aria-hidden="true"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        </form>
-      </td>
-    </tr>
-    <% }); %>
-  </tbody>
-</table>
-<table class="table table-dark">
-  <thead>
-    <tr>
-      <th scope="col"><input type="checkbox" name="checkedAll" id="checkedAll"> Check all</th>
-      <th>
-        <form action="/" method="GET">
-          <button class="btn btn-warning" aria-hidden="true"><i class="fa fa-wrench" aria-hidden="true"></i></button>
-        </form>
-      </th>
-      <th>
-        <form action="/" method="POST">
-          <button class="btn btn-danger" aria-hidden="true"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        </form>
-      </th>
-    </tr>
-  </thead>
-</table>
 
 
 

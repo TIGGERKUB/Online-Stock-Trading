@@ -2,77 +2,58 @@ var express = require("express");
 var router = express.Router();
 const connection = require("../../connection/connection");
 
-router.get("/accounts",function(req,res){
-    var find = "SELECT * FROM trader_account a, trader_data d where a.Trader_Personal_ID = d.Trader_Personal_ID AND  d.Username ='"+req.session.username+"'";
-    connection.query(find,function(err,foundAccounts){
-        if(err){
+router.get("/accounts", function (req, res) {
+    var find = "SELECT * FROM trader_account a, trader_data d where a.Trader_Personal_ID = d.Trader_Personal_ID AND  d.Username ='" + req.session.username + "'";
+    connection.query(find, function (err, foundAccounts) {
+        if (err) {
             throw err;
         }
         console.log(foundAccounts);
-        res.render("profiles/showAccount",{accounts:foundAccounts});
+        res.render("profiles/showAccount", {
+            accounts: foundAccounts
+        });
     })
 })
 
-router.get("/accounts/new",function(req,res){
+router.get("/accounts/new", function (req, res) {
     var find = "SELECT Broker_Symbol FROM broker";
-    connection.query(find,function(err,foundBroker){
-        if(err){
+    connection.query(find, function (err, foundBroker) {
+        if (err) {
             throw err;
         }
-    res.render("profiles/newAccount",{brokers:foundBroker});
+        res.render("profiles/newAccount", {
+            brokers: foundBroker
+        });
     });
 });
 
-router.post("/accounts/new",function(req,res){
+router.post("/accounts/new", function (req, res) {
     var broker = req.body.broker;
     var accountType = req.body.Account_type;
     var PIN = req.body.PIN;
-    var accountNO = Math.floor(Math.random() * 999999) + 100000;
     var accountBalance = 0;
-
-    var find = "SELECT Trader_Personal_ID FROM trader_data where username = '"+req.session.username+"'";
-    connection.query(find,function(err,foundID){
-        if(err){
+    var find = "SELECT Trader_Personal_ID FROM trader_data where username = '" + req.session.username + "'";
+    connection.query(find, function (err, foundID) {
+        if (err) {
             throw err;
         }
         var ID = foundID[0].Trader_Personal_ID;
-        var same = "SELECT Account_ID FROM trader_account"
-        connection.query(same,function(err,foundSames){
-            if(err){
+        var sql = "INSERT INTO trader_account(PIN,Account_Balance,Account_Type,Trader_Personal_ID,Broker_Symbol) values(" + PIN + "," + accountBalance + ",'" + accountType + "','" + ID + "','" + broker + "')";
+        connection.query(sql, function (err, result) {
+            if (err) {
                 throw err;
-                }
-            var errorSame = 0;
-            while(errorSame === 0){
-                foundSames.forEach(function(foundSame){
-                    if(accountNO === foundSame.Account_ID || accountNO >999999){
-                        console.log("Found same account!!!!");
-                        errorSame = -1;
-                        accountNO = Math.floor(Math.random() * 999999) + 100000;
-                    }
-                if (errorSame === -1) {
-                    errorSame = 0;
-                }else{
-                    errorSame = 1;
-                }
-                });
             }
-            var sql = "INSERT INTO trader_account(Account_ID,PIN,Account_Balance,Account_Type,Trader_Personal_ID,Broker_Symbol) values("+accountNO+","+PIN+","+accountBalance+",'"+accountType+"','"+ID+"','"+broker+"')";
-            connection.query(sql,function(err,result){
-                if(err){
-                    throw err;
-                }
-                console.log("Open Account Success");
-                res.redirect("/profiles/accounts");
-                });
-            })
+            console.log("Open Account Success");
+            res.redirect("/profiles/accounts");
         });
-    });
+    })
+});
 
-router.delete("/accounts/:id",function(req,res){
-    console.log("delete " +req.params.id);
-    var remove = "DELETE FROM trader_account WHERE Account_ID = "+req.params.id+" ";
-    connection.query(remove,function(err,foundAccounts){
-        if(err){
+router.delete("/accounts/:id", function (req, res) {
+    console.log("delete " + req.params.id);
+    var remove = "DELETE FROM trader_account WHERE Account_ID = " + req.params.id + " ";
+    connection.query(remove, function (err, foundAccounts) {
+        if (err) {
             throw err;
         }
         console.log("delete success");
@@ -80,50 +61,54 @@ router.delete("/accounts/:id",function(req,res){
     })
 })
 
-router.get("/accounts/:id/edit",function(req,res){
+router.get("/accounts/:id/edit", function (req, res) {
     console.log(req.params.id);
     var edit = req.params.id;
-    var find = "SELECT * FROM trader_account WHERE Account_ID ="+edit+" ";
-    connection.query(find,function(err,foundAccounts){
-        if(err){
+    var find = "SELECT * FROM trader_account WHERE Account_ID =" + edit + " ";
+    connection.query(find, function (err, foundAccounts) {
+        if (err) {
             throw err;
         }
         console.log(foundAccounts);
-        res.render("profiles/edit",{account:foundAccounts[0]});
+        res.render("profiles/edit", {
+            account: foundAccounts[0]
+        });
     })
 })
 
-router.put("/accounts/updatepin/:id",function(req,res){
+router.put("/accounts/updatepin/:id", function (req, res) {
     console.log(req.params.id);
     var edit = req.params.id;
-    var find = "SELECT * FROM trader_account WHERE Account_ID ="+edit+" ";
+    var find = "SELECT * FROM trader_account WHERE Account_ID =" + edit + " ";
 
-    connection.query(find,function(err,foundAccounts){
-            if(err){
+    connection.query(find, function (err, foundAccounts) {
+        if (err) {
+            throw err;
+        }
+        var updatePIN = "UPDATE trader_account SET PIN = " + req.body.newPIN + " WHERE Account_ID = " + foundAccounts[0].Account_ID + " ";
+        connection.query(updatePIN, function (err, updateDone) {
+            if (err) {
                 throw err;
             }
-            var updatePIN = "UPDATE trader_account SET PIN = "+req.body.newPIN+" WHERE Account_ID = "+foundAccounts[0].Account_ID+" ";
-            connection.query(updatePIN,function(err,updateDone){
-                if(err){
-                    throw err;
-                }
-                res.redirect("/profiles/accounts");
-            });
+            res.redirect("/profiles/accounts");
         });
+    });
 })
 
-router.get("/transaction",function(req,res){
-    var find = "SELECT * FROM trader_account a, trader_data d where a.Trader_Personal_ID = d.Trader_Personal_ID AND  d.Username ='"+req.session.username+"'";
-    connection.query(find,function(err,foundAccounts){
-        if(err){
+router.get("/transaction", function (req, res) {
+    var find = "SELECT * FROM trader_account a, trader_data d where a.Trader_Personal_ID = d.Trader_Personal_ID AND  d.Username ='" + req.session.username + "'";
+    connection.query(find, function (err, foundAccounts) {
+        if (err) {
             throw err;
         }
         console.log(foundAccounts);
-        res.render("profiles/transaction",{accounts:foundAccounts});
+        res.render("profiles/transaction", {
+            accounts: foundAccounts
+        });
     })
 })
 
-router.post("/transaction",function(req,res){
+router.post("/transaction", function (req, res) {
     var Transaction_Type = req.body.Transaction_Type;
     var Transaction_Amount = req.body.Transaction_Amount;
     var Account_ID = req.body.Account_ID;
@@ -132,35 +117,34 @@ router.post("/transaction",function(req,res){
     console.log(Transaction_Amount);
     console.log(Account_ID);
 
-    var findBalance = "SELECT Account_Balance FROM trader_account WHERE Account_ID ="+Account_ID+"";
-    connection.query(findBalance,function(err,foundBalance){
-        if(err){
+    var findBalance = "SELECT Account_Balance FROM trader_account WHERE Account_ID =" + Account_ID + "";
+    connection.query(findBalance, function (err, foundBalance) {
+        if (err) {
             throw err;
         }
         console.log(foundBalance[0].Account_Balance);
-        if(Transaction_Type === 'Deposit'){
+        if (Transaction_Type === 'Deposit') {
             foundBalance[0].Account_Balance += Number(Transaction_Amount);
             console.log(foundBalance[0].Account_Balance);
-        }else if(Transaction_Type === 'Withdraw'){
+        } else if (Transaction_Type === 'Withdraw') {
             foundBalance[0].Account_Balance = foundBalance[0].Account_Balance - Transaction_Amount;
-        }
-        else{
+        } else {
             console.log("err foundBalance");
             res.redirect("/profiles/transaction");
         }
 
-        if(foundBalance[0].Account_Balance < 0){
+        if (foundBalance[0].Account_Balance < 0) {
             console.log("err Account_Balance must greater than 0");
             res.redirect("/profiles/transaction");
         }
-        var insertTransaction = "INSERT INTO transaction(Transaction_Type,Transaction_Amount,Account_ID) VALUES ('"+Transaction_Type+"',"+Transaction_Amount+","+Account_ID+")";
-        connection.query(insertTransaction,function(err,foundTransaction){
-            if(err){
+        var insertTransaction = "INSERT INTO transaction(Transaction_Type,Transaction_Amount,Account_ID) VALUES ('" + Transaction_Type + "'," + Transaction_Amount + "," + Account_ID + ")";
+        connection.query(insertTransaction, function (err, foundTransaction) {
+            if (err) {
                 throw err;
             }
-            var updateBalance = "UPDATE trader_account SET 	Account_Balance = "+foundBalance[0].Account_Balance+" WHERE Account_ID = "+Account_ID+" ";
-            connection.query(updateBalance,function(err,foundupdateBalance){
-                if(err){
+            var updateBalance = "UPDATE trader_account SET 	Account_Balance = " + foundBalance[0].Account_Balance + " WHERE Account_ID = " + Account_ID + " ";
+            connection.query(updateBalance, function (err, foundupdateBalance) {
+                if (err) {
                     throw err;
                 }
                 res.redirect("/profiles/accounts");
@@ -170,13 +154,15 @@ router.post("/transaction",function(req,res){
 })
 
 
-router.get("/history",function(req,res){
-    var findTransaction = "SELECT * FROM transaction t, trader_account a, trader_data d WHERE t.Account_ID = a.Account_ID AND a.Trader_Personal_ID = d.Trader_Personal_ID AND d.Username ='"+req.session.username+"'";
-    connection.query(findTransaction,function(err,foundfindTransactions){
-        if(err){
+router.get("/history", function (req, res) {
+    var findTransaction = "SELECT * FROM transaction t, trader_account a, trader_data d WHERE t.Account_ID = a.Account_ID AND a.Trader_Personal_ID = d.Trader_Personal_ID AND d.Username ='" + req.session.username + "'";
+    connection.query(findTransaction, function (err, foundfindTransactions) {
+        if (err) {
             throw err;
         }
-    res.render("profiles/history",{transactions:foundfindTransactions});
+        res.render("profiles/history", {
+            transactions: foundfindTransactions
+        });
     })
 });
 
