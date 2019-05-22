@@ -18,37 +18,48 @@
 
 	<!-- navbar -->
 	<div id="content">
-		<nav class="navbar navbar-expand-lg bg-dark">
-			<a class="navbar-brand text-white" href="#">STOCK</a>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="#">STOCK</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
 				aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-				<div class="navbar-nav">
-					<a class="nav-item nav-link active text-white" href="/">Home <span
-							class="sr-only">(current)</span></a>
-					<a class="nav-item nav-link text-white" href="/market_data">Market Data</a>
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link active text-white" href="/">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white" href="/market_data">Market Data</a>
+					</li>
 					<% if(currentUser){ %>
-					<a class="nav-item nav-link text-white" href="/trade">Trade</a>
-					<a class="nav-item nav-link text-white" href="/profiles/accounts">Profile</a>
+					<li class="nav-item">
+						<a class="nav-link text-white" href="/trade">Trade</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white" href="/profiles/accounts">Profile</a>
+					</li>
 					<% } %>
-				</div>
+				</ul>
+	
+				<% if(!currentUser){ %>
+	
+				<form class="form-inline" action="/login" method="POST">
+					<input class="form-control mr-sm-2" type="search" placeholder="Username" name="username" required>
+					<input class="form-control mr-sm-2" type="password" placeholder="Password" name="password" required>
+					<button class="btn btn-success my-2 mr-sm-1">LOGIN</button>
+					<a class="btn btn-primary my-2 mr-sm-2" href="/register">SIGN UP</a>
+				</form>
+	
+	
+	
+				<% }else{ %>
+				<span class="navbar-text">
+					<a class="nav-item nav-link active text-white" href="#">Welcome, <%= currentUser %><span
+							class="sr-only">(current)</span></a>
+				</span>
+				<a class="btn btn-outline-danger my-2 mr-sm-2" href="/logout">Log out</a>
+				<% } %>
 			</div>
-			<% if(!currentUser){ %>
-			<form class="form-inline" action="/login" method="POST">
-				<input class="form-control mr-sm-2" type="search" placeholder="Username" name="username" required>
-				<input class="form-control mr-sm-2" type="password" placeholder="Password" name="password" required>
-				<button class="btn btn-success my-2 mr-sm-2">LOGIN</button>
-			</form>
-			<!-- <button type="button" class="btn btn-primary my-2 mr-sm-2" id="sign_up" data-toggle="modal" data-target="#exampleModalLong" href="/register">SIGN UP</button> -->
-			<a class="btn btn-primary my-2 mr-sm-2" href="/register">SIGN UP</a>
-			<% }else{ %>
-			<span class="navbar-text">
-				<a class="nav-item nav-link active text-dark" href="#">Welcome <%= currentUser %><span
-						class="sr-only">(current)</span></a>
-			</span>
-			<a class="btn btn-outline-danger my-2 mr-sm-2" href="/logout">Log out</a>
-			<% } %>
 		</nav>
 	</div>
