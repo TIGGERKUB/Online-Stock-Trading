@@ -26,6 +26,7 @@ app.use(session({
 }));
 
 app.use(function(req,res,next){
+    res.locals.CurrentPage = req.session.page;
     res.locals.currentUser = req.session.username;
     next();
 })

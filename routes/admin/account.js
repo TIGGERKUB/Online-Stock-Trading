@@ -2,8 +2,30 @@ var express = require("express");
 var router = express.Router();
 const connection = require("../../connection/connection");
 
+router.get("/show/account", function (req, res) {
+    var findAccount = "SELECT * FROM trader_account"
+    connection.query(findAccount, function (err, foundAccount) {
+        if (err) {
+            throw err;
+        }
+        res.render("admin/show/browse/account", {
+            accounts: foundAccount
+        });
+    });
+})
+router.get("/show/search/account",function(req,res){
+    var findAccount = "SELECT * FROM trader_account"
+    connection.query(findAccount, function (err, foundAccount) {
+        if (err) {
+            throw err;
+        }
+        res.render("admin/show/search/account", {
+            accounts: foundAccount
+        });
+    });
+})
 
-router.post("/show/account",function(req,res){
+router.post("/show/search/account",function(req,res){
     var Account_type = req.body.Account_type;
     var Broker_Symbol = req.body.searchStock;
     if(Account_type && Broker_Symbol){
@@ -19,9 +41,13 @@ router.post("/show/account",function(req,res){
         if(err){
             throw err;
         }
-        res.render("admin/show/account",{accounts:foundAccount});
+        res.render("admin/show/search/account",{accounts:foundAccount});
     });
 })
+router.get("/show/insert/account",function(req,res){
+    res.render("admin/show/insert/account");
+})
+
 
 router.get("/accounts/:id/edit",function(req,res){
     console.log(req.params.id);

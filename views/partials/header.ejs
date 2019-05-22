@@ -41,18 +41,14 @@
 					</li>
 					<% } %>
 				</ul>
-	
+
 				<% if(!currentUser){ %>
-	
 				<form class="form-inline" action="/login" method="POST">
 					<input class="form-control mr-sm-2" type="search" placeholder="Username" name="username" required>
 					<input class="form-control mr-sm-2" type="password" placeholder="Password" name="password" required>
 					<button class="btn btn-success my-2 mr-sm-1">LOGIN</button>
 					<a class="btn btn-primary my-2 mr-sm-2" href="/register">SIGN UP</a>
 				</form>
-	
-	
-	
 				<% }else{ %>
 				<span class="navbar-text">
 					<a class="nav-item nav-link active text-white" href="#">Welcome, <%= currentUser %><span

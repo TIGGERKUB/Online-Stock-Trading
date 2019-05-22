@@ -2,7 +2,22 @@ var express = require("express");
 var router = express.Router();
 const connection = require("../../connection/connection");
 
+
 router.get("/", function (req, res) {
+    var page = "";
+    req.session.page = page;
+    res.redirect('/admin/index');
+
+})
+
+router.get("/show/account1", function (req, res) {
+    var page = "account";
+    req.session.page = page;
+    res.redirect('/admin/show/account');
+
+})
+
+router.get("/index", function (req, res) {
     var findOrder = "SELECT * FROM stock_order"
     var findTransaction = "SELECT * FROM transaction"
     connection.query(findTransaction, function (err, foundTransaction) {
@@ -29,19 +44,6 @@ router.get("/show/member", function (req, res) {
         }
         res.render("admin/show/member", {
             members: foundMember
-        });
-    });
-})
-
-
-router.get("/show/account", function (req, res) {
-    var findAccount = "SELECT * FROM trader_account"
-    connection.query(findAccount, function (err, foundAccount) {
-        if (err) {
-            throw err;
-        }
-        res.render("admin/show/account", {
-            accounts: foundAccount
         });
     });
 })
