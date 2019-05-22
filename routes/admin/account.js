@@ -44,10 +44,18 @@ router.post("/show/search/account",function(req,res){
         res.render("admin/show/search/account",{accounts:foundAccount});
     });
 })
-router.get("/show/insert/account",function(req,res){
-    res.render("admin/show/insert/account");
-})
 
+router.get("/show/insert/account",function(req,res){
+    var findAccount = "SELECT * FROM trader_account"
+    connection.query(findAccount, function (err, foundAccount) {
+        if (err) {
+            throw err;
+        }
+        res.render("admin/show/search/account", {
+            accounts: foundAccount
+        });
+    });
+})
 
 router.get("/accounts/:id/edit",function(req,res){
     console.log(req.params.id);

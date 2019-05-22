@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2019 at 09:01 AM
+-- Generation Time: May 22, 2019 at 04:41 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -81,13 +81,16 @@ INSERT INTO `broker` (`Broker_Symbol`, `Broker_Name`, `Broker_Address`, `Broker_
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `close_time`
+-- Stand-in structure for view `close_price`
 -- (See below for the actual view)
 --
-CREATE TABLE `close_time` (
+CREATE TABLE `close_price` (
 `date` date
+,`time` time(6)
+,`Match_ID` int(6)
 ,`stock_symbol` varchar(6)
-,`close_time` time(6)
+,`close_price` float
+,`Match_Volume` int(10)
 );
 
 -- --------------------------------------------------------
@@ -123,6 +126,17 @@ CREATE TABLE `match_data` (
   `Match_Time` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `match_data`
+--
+
+INSERT INTO `match_data` (`Match_ID`, `Match_Volume`, `Match_Time`) VALUES
+(1, 100, '2019-05-22 06:14:33.250031'),
+(2, 100, '2019-05-22 08:52:10.094423'),
+(3, 100, '2019-05-22 10:26:22.000000'),
+(4, 100, '2019-05-21 06:15:36.000000'),
+(5, 100, '2019-05-21 08:26:27.000000');
+
 -- --------------------------------------------------------
 
 --
@@ -133,6 +147,22 @@ CREATE TABLE `match_order` (
   `Order_No` int(8) NOT NULL,
   `Match_ID` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `match_order`
+--
+
+INSERT INTO `match_order` (`Order_No`, `Match_ID`) VALUES
+(116975, 2),
+(209977, 1),
+(305360, 4),
+(406028, 5),
+(415833, 3),
+(464316, 4),
+(715483, 2),
+(764989, 3),
+(848956, 1),
+(887290, 5);
 
 -- --------------------------------------------------------
 
@@ -175,13 +205,23 @@ CREATE TABLE `stock_order` (
 
 INSERT INTO `stock_order` (`Order_No`, `Order_Time`, `Order_Status`, `Order_Price`, `Order_Type`, `Order_Volume`, `Stock_Symbol`, `Account_ID`) VALUES
 (111513, '2019-05-01 18:25:24.694292', 'Q', 23, 'Sell', 2, 'AIS', 417438),
+(116975, '2019-05-22 09:30:08.864039', 'Q', 55, 'Sell', 100, 'AIS', 379793),
+(209977, '2019-05-22 09:01:26.241468', 'Q', 50, 'Sell', 100, 'AIS', 379793),
 (280311, '2019-05-01 19:05:38.078299', 'Q', 123, 'Buy', 123, 'FUCK', 417438),
 (286134, '2019-05-12 15:23:47.028485', 'Q', 3434, 'Buy', 123, 'AIS', 417438),
+(305360, '2019-05-22 11:34:09.039991', 'Q', 40, 'Buy', 100, 'AIS', 317828),
 (341451, '2019-05-02 08:51:55.652202', 'Q', 100, 'Buy', 2000, 'AIS', 427540),
+(406028, '2019-05-22 12:00:58.583381', 'Q', 43, 'Buy', 100, 'AIS', 317828),
+(415833, '2019-05-22 09:30:28.590707', 'Q', 45, 'Sell', 100, 'AIS', 379793),
+(464316, '2019-05-22 11:34:28.355931', 'Q', 40, 'Sell', 100, 'AIS', 379793),
 (510144, '2019-05-01 18:35:03.532743', 'Q', 122, 'Sell', 31, 'AIS', 417438),
 (520679, '2019-05-12 15:23:12.857586', 'Q', 122, 'Buy', 12, 'AIS', 317828),
 (625162, '2019-05-11 10:45:50.869695', 'Q', 232, 'Buy', 2321, 'FUCK', 317828),
 (680443, '2019-05-01 18:43:34.319504', 'Q', 123, 'Sell', 22, 'TRUE', 417438),
+(715483, '2019-05-22 09:29:26.215495', 'Q', 55, 'Buy', 100, 'AIS', 317828),
+(764989, '2019-05-22 09:29:36.376099', 'Q', 45, 'Buy', 100, 'AIS', 317828),
+(848956, '2019-05-22 09:00:57.818472', 'Q', 50, 'Buy', 100, 'AIS', 317828),
+(887290, '2019-05-22 12:01:10.419927', 'Q', 43, 'Sell', 100, 'AIS', 379793),
 (982763, '2019-05-02 08:53:35.513118', 'Q', 555, 'Sell', 45, 'TRUE', 427540),
 (1096785, '2019-05-06 17:30:40.951091', 'Q', 342, 'Sell', 123, 'FUCK', 417438);
 
@@ -312,11 +352,11 @@ INSERT INTO `transaction` (`Transaction_ID`, `Transaction_Type`, `Transaction_Ti
 -- --------------------------------------------------------
 
 --
--- Structure for view `close_time`
+-- Structure for view `close_price`
 --
-DROP TABLE IF EXISTS `close_time`;
+DROP TABLE IF EXISTS `close_price`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `close_time`  AS  select cast(`stock_order`.`Order_Time` as date) AS `date`,`stock_order`.`Stock_Symbol` AS `stock_symbol`,max(cast(`stock_order`.`Order_Time` as time(6))) AS `close_time` from `stock_order` group by cast(`stock_order`.`Order_Time` as date),`stock_order`.`Stock_Symbol` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `close_price`  AS  select cast(`md`.`Match_Time` as date) AS `date`,cast(`md`.`Match_Time` as time(6)) AS `time`,`md`.`Match_ID` AS `Match_ID`,`so`.`Stock_Symbol` AS `stock_symbol`,`so`.`Order_Price` AS `close_price`,`md`.`Match_Volume` AS `Match_Volume` from ((`stock_order` `so` join `match_order` `mo`) join `match_data` `md`) where ((`so`.`Order_No` = `mo`.`Order_No`) and (`mo`.`Match_ID` = `md`.`Match_ID`) and (cast(`md`.`Match_Time` as time(6)) <= '16:30:00')) group by cast(`md`.`Match_Time` as date),`md`.`Match_ID`,`so`.`Stock_Symbol` order by cast(`md`.`Match_Time` as date) desc,cast(`md`.`Match_Time` as time(6)) desc ;
 
 --
 -- Indexes for dumped tables
@@ -405,7 +445,7 @@ ALTER TABLE `transaction`
 -- AUTO_INCREMENT for table `match_data`
 --
 ALTER TABLE `match_data`
-  MODIFY `Match_ID` int(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `Match_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `trader_account`
