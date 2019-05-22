@@ -14,20 +14,15 @@ router.get("/show/account", function (req, res) {
     });
 })
 router.get("/show/search/account", function (req, res) {
-    var findAccount = "SELECT * FROM trader_account"
-    connection.query(findAccount, function (err, foundAccount) {
-        if (err) {
-            throw err;
-        }
-        res.render("admin/show/search/account", {
-            accounts: foundAccount
-        });
+    var foundAccount = "";
+    res.render("admin/show/search/account", {
+        accounts: foundAccount
     });
 })
 
 router.post("/show/search/account", function (req, res) {
     var Account_type = req.body.Account_type;
-    var Broker_Symbol = req.body.searchStock;
+    var Broker_Symbol = req.body.searchBroker;
     if (Account_type && Broker_Symbol) {
         var findAccount = "SELECT * FROM trader_account WHERE Account_type = '" + Account_type + "' AND Broker_Symbol ='" + Broker_Symbol + "'";
     } else if (Account_type && !Broker_Symbol) {
@@ -35,16 +30,23 @@ router.post("/show/search/account", function (req, res) {
     } else if (!Account_type && Broker_Symbol) {
         var findAccount = "SELECT * FROM trader_account WHERE Broker_Symbol = '" + Broker_Symbol + "'";
     } else {
-        var findAccount = "SELECT * FROM trader_account ";
+        var notFound = -1;
     }
-    connection.query(findAccount, function (err, foundAccount) {
-        if (err) {
-            throw err;
-        }
+    if (notFound == -1) {
+        var foundAccount = "";
         res.render("admin/show/search/account", {
             accounts: foundAccount
         });
-    });
+    } else {
+        connection.query(findAccount, function (err, foundAccount) {
+            if (err) {
+                throw err;
+            }
+            res.render("admin/show/search/account", {
+                accounts: foundAccount
+            });
+        });
+    }
 })
 
 router.get("/show/insert/account", function (req, res) {
@@ -83,8 +85,8 @@ router.post("/show/insert/account", function (req, res) {
     console.log(Trader_Personal_IDArr);
     var Broker_SymbolArr = req.body.Broker_Symbol;
     console.log(Broker_SymbolArr);
-    var i = 0 ;
-    for(i =0 ; i < PINArr.length;i++){
+    var i = 0;
+    for (i = 0; i < PINArr.length; i++) {
         var PIN = PINArr[i];
         console.log(PIN);
         var Account_Balance = Account_BalanceArr[i];

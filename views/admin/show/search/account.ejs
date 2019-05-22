@@ -28,7 +28,7 @@
     </div>
     <div class="form-group">
       <div class="col-sm-3">
-        <input class="searchBroker searchBox tt-query" type="text" placeholder="Stock Symbol" name="searchStock">
+        <input class="searchBroker searchBox tt-query" type="text" placeholder="Broker" name="searchBroker">
       </div>
     </div>
     <button class="btn btn-outline-secondary" type="submit">Search</button>
@@ -36,7 +36,7 @@
   <br>
 </div>
 <br>
-
+<% if(accounts){ %>
 <table class="table table-dark">
   <thead>
     <tr>
@@ -92,7 +92,7 @@
     </tr>
   </thead>
 </table>
-
+<% } %>
 
 
 <% include ../../../partials/adminFoot %>
