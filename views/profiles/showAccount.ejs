@@ -5,7 +5,7 @@
 <hr>
 <div class="row" style="display:flex; flex-wrap:wrap;">
     <% accounts.forEach(function(account){ %>
-    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 my-2">
         <div class="card py-2 text-light bg-dark" id="account-card">
             <div class="card-body">
                 <div class="row card-title">
@@ -59,8 +59,8 @@
     <% }); %>
 
     <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-        <a class="" href="/profiles/accounts/new">
-            <i class="fa fa-plus fa-4x" aria-hidden="true"></i>
+        <a href="/profiles/accounts/new">
+            <i class="fa fa-plus fa-4x" aria-hidden="true" style="top: 40%;left: 40%;position: absolute;"></i>
         </a>
     </div>
 

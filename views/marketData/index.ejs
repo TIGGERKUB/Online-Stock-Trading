@@ -1,10 +1,17 @@
 <% include ../partials/header %>
 
 <!-- Search form -->
-<div class="container my-5" style="width: 50%;">
-	<form class="form-inline" action="/market_data" method="POST">
-		<i class="fa fa-search" aria-hidden="true"></i>
-		<input class="marketData tt-query" type="text" placeholder="Search Stock Symbol" name="searchStock">
+<div class="container my-5" style="width: 50%">
+	<form action="/market_data" method="POST">
+		<div class="row">
+			<div class="col col-sm col-md col-lg col-xl text-right pt-2">
+				<i class="fa fa-search" style="font-size: 24px;"></i>
+			</div>
+			<div class=" col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+					<input class="marketData tt-query" type="search" placeholder="Search Stock Symbol"
+						name="searchStock">
+			</div>
+		</div>
 	</form>
 </div>
 
@@ -12,30 +19,30 @@
 <% if(!stock){ %>
 
 <% }else{ %>
-	<div class="container" style="width: 50%;">
-		<div class="card">
-			<div class="row pt-4">
-				  <p class="card-title col ml-5 display-3" id="stock-symbol"><%=stock.Stock_Symbol%></p>
-				  <p class="col display-4">
-					  Last Trade
-					  <br>
-					  <span class="display-4" id="stock-last" style="color: red;"><%=stock.Stock_last%></span>
-				  </p>
-			  </div>
-			  <div class="row pb-4">
-				  <p class="col display-4 ml-5">
-					  Change
-					  <br>
-					  <span class="display-4" id="stock-change" style="color: red;">-0.25</span>
-				  </p>
-				  <p class="col display-4">
-					  % Change
-					  <br>
-					  <span class="display-4" id="stock-percent" style="color: red;">-0.52%</span>
-				  </p>
-			  </div>
+<div class="container" style="width: 50%;">
+	<div class="card">
+		<div class="row pt-4">
+			<p class="card-title col ml-5 display-3" id="stock-symbol"><%=stock.Stock_Symbol%></p>
+			<p class="col display-4">
+				Last Trade
+				<br>
+				<span class="display-4" id="stock-last" style="color: red;"><%=stock.Stock_last%></span>
+			</p>
+		</div>
+		<div class="row pb-4">
+			<p class="col display-4 ml-5">
+				Change
+				<br>
+				<span class="display-4" id="stock-change" style="color: red;">-0.25</span>
+			</p>
+			<p class="col display-4">
+				% Change
+				<br>
+				<span class="display-4" id="stock-percent" style="color: red;">-0.52%</span>
+			</p>
 		</div>
 	</div>
-	<% } %>
+</div>
+<% } %>
 
 <% include ../partials/footer %>

@@ -32,14 +32,11 @@
 
 
 .tt-query, .tt-hint {
-	border: 2px solid #CCCCCC;
-	border-radius: 8px;
+	border: 1px solid #CCCCCC;
 	font-size: 24px;
-	height: 30px;
-	line-height: 30px;
-	outline: medium none;
+	height: 50px;
 	padding: 8px 12px;
-	width: 396px;
+	width: 170%;
 }
 
 .tt-query {
@@ -51,11 +48,8 @@
 .markerData,.tt-dropdown-menu {
 	background-color: #FFFFFF;
 	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 8px;
-	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-	margin-top: 12px;
 	padding: 8px 0;
-	width: 400px;
+	width: 170%;
 }
 .tt-suggestion {
 	font-size: 24px;
@@ -63,7 +57,7 @@
 	padding: 3px 20px;
 }
 .tt-suggestion.tt-is-under-cursor {
-	background-color: #0097CF;
+	background-color: #0075f6;
 	color: #FFFFFF;
 }
 .tt-suggestion p {
