@@ -3,7 +3,7 @@
 
 <h1 class="display-1">My Accounts</h1>
 <hr>
-<div class="row" style="display:flex; flex-wrap:wrap;">
+<div class="row mb-3" style="display:flex; flex-wrap:wrap;">
     <% accounts.forEach(function(account){ %>
     <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 my-2">
         <div class="card py-2 text-light bg-dark" id="account-card">
@@ -58,13 +58,16 @@
     </div>
     <% }); %>
 
-    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-        <a href="/profiles/accounts/new">
-            <i class="fa fa-plus fa-4x" aria-hidden="true" style="top: 40%;left: 40%;position: absolute;"></i>
-        </a>
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 my-2">
+        <div class="py-2 card">
+            <a href="/profiles/accounts/new" class="text-decoration-none">
+                <i class="fa fa-plus fa-4x card-img-top" aria-hidden="true" style="margin: 35% 40% 20%"></i>
+                <div class="text-center" style="position: relative">
+                    <p class="card-text" style="font-size: 24px;margin-bottom:12%">Add Account</p>
+                </div>
+            </a>
+        </div>
     </div>
-
-</div>
 </div>
 </div>
 

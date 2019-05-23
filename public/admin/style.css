@@ -2,7 +2,11 @@
     DEMO STYLE
 */
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap');
 
+th{
+    font-family: 'Raleway',sans-serif;
+}
 
 body {
     font-family: 'Poppins', sans-serif;
