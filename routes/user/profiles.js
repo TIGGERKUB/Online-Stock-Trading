@@ -8,7 +8,7 @@ router.get("/accounts", function (req, res) {
         if (err) {
             throw err;
         }
-        console.log(foundAccounts);
+        // console.log(foundAccounts);
         res.render("profiles/showAccount", {
             accounts: foundAccounts
         });
@@ -43,7 +43,7 @@ router.post("/accounts/new", function (req, res) {
             if (err) {
                 throw err;
             }
-            console.log("Open Account Success");
+            // console.log("Open Account Success");
             res.redirect("/profiles/accounts");
         });
     })
@@ -56,20 +56,20 @@ router.delete("/accounts/:id", function (req, res) {
         if (err) {
             throw err;
         }
-        console.log("delete success");
+        // console.log("delete success");
         res.redirect("/profiles/accounts");
     })
 })
 
 router.get("/accounts/:id/edit", function (req, res) {
-    console.log(req.params.id);
+    // console.log(req.params.id);
     var edit = req.params.id;
     var find = "SELECT * FROM trader_account WHERE Account_ID =" + edit + " ";
     connection.query(find, function (err, foundAccounts) {
         if (err) {
             throw err;
         }
-        console.log(foundAccounts);
+        // console.log(foundAccounts);
         res.render("profiles/edit", {
             account: foundAccounts[0]
         });
@@ -77,7 +77,7 @@ router.get("/accounts/:id/edit", function (req, res) {
 })
 
 router.put("/accounts/updatepin/:id", function (req, res) {
-    console.log(req.params.id);
+    // console.log(req.params.id);
     var edit = req.params.id;
     var find = "SELECT * FROM trader_account WHERE Account_ID =" + edit + " ";
 
@@ -101,7 +101,7 @@ router.get("/transaction", function (req, res) {
         if (err) {
             throw err;
         }
-        console.log(foundAccounts);
+        //console.log(foundAccounts);
         res.render("profiles/transaction", {
             accounts: foundAccounts
         });
@@ -113,28 +113,28 @@ router.post("/transaction", function (req, res) {
     var Transaction_Amount = req.body.Transaction_Amount;
     var Account_ID = req.body.Account_ID;
 
-    console.log(Transaction_Type);
-    console.log(Transaction_Amount);
-    console.log(Account_ID);
+    //console.log(Transaction_Type);
+    //console.log(Transaction_Amount);
+    //console.log(Account_ID);
 
     var findBalance = "SELECT Account_Balance FROM trader_account WHERE Account_ID =" + Account_ID + "";
     connection.query(findBalance, function (err, foundBalance) {
         if (err) {
             throw err;
         }
-        console.log(foundBalance[0].Account_Balance);
+        //console.log(foundBalance[0].Account_Balance);
         if (Transaction_Type === 'Deposit') {
             foundBalance[0].Account_Balance += Number(Transaction_Amount);
-            console.log(foundBalance[0].Account_Balance);
+            //console.log(foundBalance[0].Account_Balance);
         } else if (Transaction_Type === 'Withdraw') {
             foundBalance[0].Account_Balance = foundBalance[0].Account_Balance - Transaction_Amount;
         } else {
-            console.log("err foundBalance");
+            //console.log("err foundBalance");
             res.redirect("/profiles/transaction");
         }
 
         if (foundBalance[0].Account_Balance < 0) {
-            console.log("err Account_Balance must greater than 0");
+            //console.log("err Account_Balance must greater than 0");
             res.redirect("/profiles/transaction");
         }
         var insertTransaction = "INSERT INTO transaction(Transaction_Type,Transaction_Amount,Account_ID) VALUES ('" + Transaction_Type + "'," + Transaction_Amount + "," + Account_ID + ")";

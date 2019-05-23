@@ -11,6 +11,7 @@ var expressSanitizer = require("express-sanitizer");
 var marketData = require("./routes/user/marketData");
 var profiles = require("./routes/user/profiles");
 var trade = require("./routes/user/trade");
+var portfolio = require("./routes/user/portfolio");
 var auth = require("./routes/auth");
 var admin = require("./routes/admin/index");
 var adminAccount = require("./routes/admin/account");
@@ -39,6 +40,7 @@ app.use("/",auth);
 app.use("/market_data",marketData);
 app.use("/profiles",profiles);
 app.use("/trade",trade);
+app.use("/portfolio",portfolio);
 app.use("/admin",admin);
 app.use("/admin",adminAccount);
 

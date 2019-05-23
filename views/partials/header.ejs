@@ -32,13 +32,29 @@
 					<li class="nav-item">
 						<a class="nav-link text-white" href="/market_data">Market Data</a>
 					</li>
-					<% if(currentUser){ %>
+					<% if(currentUser === 'admin'){ %>
 					<li class="nav-item">
 						<a class="nav-link text-white" href="/trade">Trade</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link text-white" href="/Portfolio">Portfolio</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link text-white" href="/profiles/accounts">Profile</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white" href="/admin">Admin</a>
+					</li>
+					<% }else if(currentUser){ %>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="/trade">Trade</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="/Portfolio">Portfolio</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="/profiles/accounts">Profile</a>
+						</li>
 					<% } %>
 				</ul>
 
