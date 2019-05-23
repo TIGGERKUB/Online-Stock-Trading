@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2019 at 04:41 PM
+-- Generation Time: May 23, 2019 at 05:23 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -81,21 +81,6 @@ INSERT INTO `broker` (`Broker_Symbol`, `Broker_Name`, `Broker_Address`, `Broker_
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `close_price`
--- (See below for the actual view)
---
-CREATE TABLE `close_price` (
-`date` date
-,`time` time(6)
-,`Match_ID` int(6)
-,`stock_symbol` varchar(6)
-,`close_price` float
-,`Match_Volume` int(10)
-);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `company`
 --
 
@@ -122,6 +107,7 @@ INSERT INTO `company` (`Company_Name (PK)`, `Company_Owner_Name`, `Company_Addre
 
 CREATE TABLE `match_data` (
   `Match_ID` int(6) NOT NULL,
+  `Match_Price` float NOT NULL,
   `Match_Volume` int(10) NOT NULL,
   `Match_Time` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -130,12 +116,8 @@ CREATE TABLE `match_data` (
 -- Dumping data for table `match_data`
 --
 
-INSERT INTO `match_data` (`Match_ID`, `Match_Volume`, `Match_Time`) VALUES
-(1, 100, '2019-05-22 06:14:33.250031'),
-(2, 100, '2019-05-22 08:52:10.094423'),
-(3, 100, '2019-05-22 10:26:22.000000'),
-(4, 100, '2019-05-21 06:15:36.000000'),
-(5, 100, '2019-05-21 08:26:27.000000');
+INSERT INTO `match_data` (`Match_ID`, `Match_Price`, `Match_Volume`, `Match_Time`) VALUES
+(16, 34, 200, '2019-05-23 12:48:09.665469');
 
 -- --------------------------------------------------------
 
@@ -145,24 +127,16 @@ INSERT INTO `match_data` (`Match_ID`, `Match_Volume`, `Match_Time`) VALUES
 
 CREATE TABLE `match_order` (
   `Order_No` int(8) NOT NULL,
-  `Match_ID` int(6) NOT NULL
+  `Match_No` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `match_order`
 --
 
-INSERT INTO `match_order` (`Order_No`, `Match_ID`) VALUES
-(116975, 2),
-(209977, 1),
-(305360, 4),
-(406028, 5),
-(415833, 3),
-(464316, 4),
-(715483, 2),
-(764989, 3),
-(848956, 1),
-(887290, 5);
+INSERT INTO `match_order` (`Order_No`, `Match_No`) VALUES
+(1096814, 16),
+(1096815, 16);
 
 -- --------------------------------------------------------
 
@@ -204,9 +178,7 @@ CREATE TABLE `stock_order` (
 --
 
 INSERT INTO `stock_order` (`Order_No`, `Order_Time`, `Order_Status`, `Order_Price`, `Order_Type`, `Order_Volume`, `Stock_Symbol`, `Account_ID`) VALUES
-(111513, '2019-05-01 18:25:24.694292', 'Q', 23, 'Sell', 2, 'AIS', 417438),
 (116975, '2019-05-22 09:30:08.864039', 'Q', 55, 'Sell', 100, 'AIS', 379793),
-(209977, '2019-05-22 09:01:26.241468', 'Q', 50, 'Sell', 100, 'AIS', 379793),
 (280311, '2019-05-01 19:05:38.078299', 'Q', 123, 'Buy', 123, 'FUCK', 417438),
 (286134, '2019-05-12 15:23:47.028485', 'Q', 3434, 'Buy', 123, 'AIS', 417438),
 (305360, '2019-05-22 11:34:09.039991', 'Q', 40, 'Buy', 100, 'AIS', 317828),
@@ -218,12 +190,10 @@ INSERT INTO `stock_order` (`Order_No`, `Order_Time`, `Order_Status`, `Order_Pric
 (520679, '2019-05-12 15:23:12.857586', 'Q', 122, 'Buy', 12, 'AIS', 317828),
 (625162, '2019-05-11 10:45:50.869695', 'Q', 232, 'Buy', 2321, 'FUCK', 317828),
 (680443, '2019-05-01 18:43:34.319504', 'Q', 123, 'Sell', 22, 'TRUE', 417438),
-(715483, '2019-05-22 09:29:26.215495', 'Q', 55, 'Buy', 100, 'AIS', 317828),
-(764989, '2019-05-22 09:29:36.376099', 'Q', 45, 'Buy', 100, 'AIS', 317828),
-(848956, '2019-05-22 09:00:57.818472', 'Q', 50, 'Buy', 100, 'AIS', 317828),
-(887290, '2019-05-22 12:01:10.419927', 'Q', 43, 'Sell', 100, 'AIS', 379793),
-(982763, '2019-05-02 08:53:35.513118', 'Q', 555, 'Sell', 45, 'TRUE', 427540),
-(1096785, '2019-05-06 17:30:40.951091', 'Q', 342, 'Sell', 123, 'FUCK', 417438);
+(1096814, '2019-05-23 12:48:09.674445', 'M', 34, 'Sell', 200, 'AIS', 611397),
+(1096815, '2019-05-23 12:48:09.674445', 'M', 34, 'Buy', 200, 'AIS', 317828),
+(1096816, '2019-05-23 12:48:09.660483', 'Q', 40, 'Sell', 45, 'TRUE', 611397),
+(1096817, '2019-05-23 12:48:33.936151', 'Q', 12, 'Sell', 12, 'AIS', 611397);
 
 -- --------------------------------------------------------
 
@@ -280,7 +250,14 @@ INSERT INTO `trader_account` (`Account_ID`, `PIN`, `Account_Balance`, `Account_T
 (562964, 111, 40000000000, 'Cash_Balance', '26262622', 'ASL'),
 (580429, 556, 60000000, 'Cash_Account', '123456', 'AIRA'),
 (583928, 234, 12121, 'Cash_Balance', '26262622', 'ASL'),
-(611388, 123, 15452, 'Credit_Balance', '123456', 'ASL');
+(611388, 123, 15452, 'Credit_Balance', '123456', 'ASL'),
+(611389, 333, 0, 'Credit_Balance', '123456', 'KSS'),
+(611392, 123, 213, 'Credit_Balance', '123456', 'ASL'),
+(611393, 123, 123, 'Cash_Balance', '45231', 'ASL'),
+(611394, 122, 123, 'Cash_Account', '123', 'MBKET'),
+(611395, 123, 123, 'Cash_Balance', '432324', 'KSS'),
+(611396, 232, 123, 'Cash_Balance', '12545', 'ASL'),
+(611397, 231, 0, 'Credit_Balance', '1445522', 'AIRA');
 
 -- --------------------------------------------------------
 
@@ -309,7 +286,7 @@ INSERT INTO `trader_data` (`Trader_Personal_ID`, `Username`, `Password`, `Trader
 ('123', 'sc', '222', '22', '222', 22, 'as', 'as_sippanon@hotmail.com', '213123'),
 ('123456', 'p', 'p', 'p', 'p', 26, 'p', 'p@p.com', 'p'),
 ('12545', 'n', 'n', 'n', 'nn', 77, 'as', 'nabnoteac131@hotmail.com', '213123'),
-('1445522', 'pop', 'wwqe', 'Sippanon', 'Utakruda', 20, 'as', 'as_sippanon@hotmail.com', '213123'),
+('1445522', 'k', 'k', 'Sippanon', 'Utakruda', 20, 'as', 'as_sippanon@hotmail.com', '213123'),
 ('21111', 'asd', '222', '22', 'Utakruda', 1222, 'as', 'as_sippanon@hotmail.com', '0957728989'),
 ('213', 'mmm', 'mmm', 'mmm', 'mmm', 44, 'mm', 'music_rr_girl@hotmail.com', 'mmm'),
 ('232323', 'admin', 'admin', 'admin', 'admin', 55, 'admin', 'admin@admin.com', '2222'),
@@ -349,15 +326,6 @@ INSERT INTO `transaction` (`Transaction_ID`, `Transaction_Type`, `Transaction_Ti
 (1081282, 'Withdraw', '2019-05-12 14:55:28.639028', 12, 317828),
 (1081283, 'Withdraw', '2019-05-12 14:57:58.515119', 12, 317828);
 
--- --------------------------------------------------------
-
---
--- Structure for view `close_price`
---
-DROP TABLE IF EXISTS `close_price`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `close_price`  AS  select cast(`md`.`Match_Time` as date) AS `date`,cast(`md`.`Match_Time` as time(6)) AS `time`,`md`.`Match_ID` AS `Match_ID`,`so`.`Stock_Symbol` AS `stock_symbol`,`so`.`Order_Price` AS `close_price`,`md`.`Match_Volume` AS `Match_Volume` from ((`stock_order` `so` join `match_order` `mo`) join `match_data` `md`) where ((`so`.`Order_No` = `mo`.`Order_No`) and (`mo`.`Match_ID` = `md`.`Match_ID`) and (cast(`md`.`Match_Time` as time(6)) <= '16:30:00')) group by cast(`md`.`Match_Time` as date),`md`.`Match_ID`,`so`.`Stock_Symbol` order by cast(`md`.`Match_Time` as date) desc,cast(`md`.`Match_Time` as time(6)) desc ;
-
 --
 -- Indexes for dumped tables
 --
@@ -391,8 +359,7 @@ ALTER TABLE `match_data`
 -- Indexes for table `match_order`
 --
 ALTER TABLE `match_order`
-  ADD PRIMARY KEY (`Order_No`,`Match_ID`),
-  ADD KEY `match_data_ibfk_1` (`Match_ID`);
+  ADD PRIMARY KEY (`Order_No`,`Match_No`);
 
 --
 -- Indexes for table `stock_market`
@@ -445,13 +412,19 @@ ALTER TABLE `transaction`
 -- AUTO_INCREMENT for table `match_data`
 --
 ALTER TABLE `match_data`
-  MODIFY `Match_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Match_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `stock_order`
+--
+ALTER TABLE `stock_order`
+  MODIFY `Order_No` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1096818;
 
 --
 -- AUTO_INCREMENT for table `trader_account`
 --
 ALTER TABLE `trader_account`
-  MODIFY `Account_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=611389;
+  MODIFY `Account_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=611398;
 
 --
 -- AUTO_INCREMENT for table `transaction`
@@ -473,8 +446,8 @@ ALTER TABLE `bank_account`
 -- Constraints for table `match_order`
 --
 ALTER TABLE `match_order`
-  ADD CONSTRAINT `match_data_ibfk_1` FOREIGN KEY (`Match_ID`) REFERENCES `match_data` (`Match_ID`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `match_data_ibfk_2` FOREIGN KEY (`Order_No`) REFERENCES `stock_order` (`Order_No`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `match_order_ibfk_1` FOREIGN KEY (`Order_No`) REFERENCES `stock_order` (`Order_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `match_order_ibfk_2` FOREIGN KEY (`Match_No`) REFERENCES `match_data` (`Match_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `stock_order`
