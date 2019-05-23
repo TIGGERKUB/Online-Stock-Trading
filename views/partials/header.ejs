@@ -36,24 +36,35 @@
 					<li class="nav-item">
 						<a class="nav-link text-white" href="/trade">Trade</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link text-white" href="/Portfolio">Portfolio</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link text-white" href="/profiles/accounts">Profile</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link text-white" href="/admin">Admin</a>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+							Profile
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="/Portfolio">Portfolio</a>
+							<a class="dropdown-item" href="/profiles/accounts">Account</a>
+							<a class="dropdown-item" href="/profiles/transaction">Transaction</a>
+							<a class="dropdown-item" href="/profiles/history">History</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="/admin">Admin</a>
+						</div>
 					</li>
 					<% }else if(currentUser){ %>
 						<li class="nav-item">
 							<a class="nav-link text-white" href="/trade">Trade</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link text-white" href="/Portfolio">Portfolio</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-white" href="/profiles/accounts">Profile</a>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
+								Profile
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="/Portfolio">Portfolio</a>
+								<a class="dropdown-item" href="/profiles/accounts">Account</a>
+								<a class="dropdown-item" href="/profiles/transaction">Transaction</a>
+								<a class="dropdown-item" href="/profiles/history">History</a>
+							</div>
 						</li>
 					<% } %>
 				</ul>
