@@ -2,13 +2,14 @@
 <% include ../partials/profilesHead %>
 
 
-<h1 class="display-2">Transaction History</h1>
+<h1 class="display-2">Banking statement</h1>
 <hr>
 <div class="container" style="margin-bottom: 10%;">
     <table class="table">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">DD/MM/YYYY</th>
+                <th scope="col">Time</th>
                 <th scope="col">Type</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Account ID</th>
@@ -22,6 +23,7 @@
                     <tr class="table-danger">
                 <% } %>
                 <td><%=transaction.Transaction_Timestamp.toDateString()%></td>
+                <td></td>
                 <td><%=transaction.Transaction_Type%></td>
                 <td><%=transaction.Transaction_Amount%></td>
                 <td><%=transaction.Account_ID%></td>
@@ -37,6 +39,20 @@
 <hr>
 <h1 class="display-2">Order stock History</h1>
 <hr>
+<div class="container"></div>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Order ID</th>
+            <th scope="col">Stock Symbol</th>
+            <th scope="col">Time</th>
+            <th scope="col">Order Type</th>
+            <th scope="col">Volume</th>
+            <th scope="col">Price</th>
+        </tr>
+    </thead>
+</table>
+
 
 <% include ../partials/profilesFoot %>
 <% include ../partials/footer %>

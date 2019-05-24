@@ -6,11 +6,11 @@
 <hr>
 <div class="row mb-3" style="display:flex; flex-wrap:wrap;">
     <% accounts.forEach(function(account){ %>
-    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 my-2">
+    <div class="col col-xl-4 col-lg-5 col-md-6 col-sm-8 my-2">
         <div class="card py-2 text-light bg-dark" id="account-card">
             <div class="card-body">
                 <div class="row card-title">
-                    <div class="col">
+                    <div class="col col-sm col-md col-lg col-xl">
                         <h3><%= account.Account_ID %></h3>
                     </div>
                     <div class="col text-right">
@@ -20,31 +20,31 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-8 col-sm-7 col-md-8 col-lg-8 col-xl-7">
                         <h6>Account No:</h6>
                     </div>
-                    <div class="col">
+                    <div class="col col-sm col-md col-lg col-xl text-right">
                         <p class="font-weight-normal"><%=account.Account_ID%></p>
                     </div>
                     <div class="w-100"></div>
-                    <div class="col-6">
+                    <div class="col-6 col-sm-7 col-md-6 col-lg-6 col-xl-7">
                         <h6>Account Type:</h6>
                     </div>
-                    <div class="col">
+                    <div class="col col-sm col-md col-lg col-xl text-right">
                         <p class="font-weight-normal"><%=account.Account_Type%></p>
                     </div>
                     <div class="w-100"></div>
-                    <div class="col-8">
+                    <div class="col-8 col-sm-9 col-md-8 col-lg-8 col-xl-8">
                         <h6>Account Balance:</h6>
                     </div>
-                    <div class="col">
+                    <div class="col col-sm col-md col-lg col-xl text-right">
                         <p class="font-weight-normal"><%=account.Account_Balance%>$</p>
                     </div>
                     <div class="w-100"></div>
-                    <div class="col-8">
+                    <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
                         <h6>Broker:<h6>
                     </div>
-                    <div class="col">
+                    <div class="col col-sm col-md col-lg col-xl text-right">
                         <p class="font-weight-normal"><%=account.Broker_Symbol%></p>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
     </div>
     <% }); %>
 
-    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 my-2">
+    <div class="col col-xl-3 col-lg-4 col-md-5 col-sm-8 my-2">
         <div class="py-2 card">
             <a href="/profiles/accounts/new" class="text-decoration-none">
                 <i class="fa fa-plus fa-4x card-img-top" aria-hidden="true" style="margin: 35% 40% 20%"></i>
