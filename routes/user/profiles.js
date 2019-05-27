@@ -3,6 +3,21 @@ var router = express.Router();
 const connection = require("../../connection/connection");
 
 router.get("/accounts", function (req, res) {
+    var find = "SELECT a.Account_ID,a.Account_Balance FROM trader_account a,trader_data d WHERE a.Trader_Personal_ID = d.Trader_Personal_ID AND d.Username ='" + req.session.username + "' ";
+    connection.query(find, function (err, result) {
+        req.session.allAccount = result;
+        if (result.length > 0) {
+            req.session.currentAccount = result[0].Account_ID;
+            req.session.currentBalance = result[0].Account_Balance;
+        }else{
+            req.session.currentAccount = -1;
+            req.session.currentBalance = -1;
+        }
+        res.redirect("/profiles/accounts/index");
+    })
+})
+
+router.get("/accounts/index", function (req, res) {
     var find = "SELECT * FROM trader_account a, trader_data d where a.Trader_Personal_ID = d.Trader_Personal_ID AND  d.Username ='" + req.session.username + "'";
     connection.query(find, function (err, foundAccounts) {
         if (err) {
@@ -96,28 +111,18 @@ router.put("/accounts/updatepin/:id", function (req, res) {
 })
 
 router.get("/transaction", function (req, res) {
-    var find = "SELECT * FROM trader_account a, trader_data d where a.Trader_Personal_ID = d.Trader_Personal_ID AND  d.Username ='" + req.session.username + "'";
-    connection.query(find, function (err, foundAccounts) {
-        if (err) {
-            throw err;
-        }
-        //console.log(foundAccounts);
-        res.render("profiles/transaction", {
-            accounts: foundAccounts
-        });
-    })
+    res.render("profiles/transaction");
 })
 
 router.post("/transaction", function (req, res) {
     var Transaction_Type = req.body.Transaction_Type;
     var Transaction_Amount = req.body.Transaction_Amount;
-    var Account_ID = req.body.Account_ID;
 
     //console.log(Transaction_Type);
     //console.log(Transaction_Amount);
     //console.log(Account_ID);
 
-    var findBalance = "SELECT Account_Balance FROM trader_account WHERE Account_ID =" + Account_ID + "";
+    var findBalance = "SELECT Account_Balance FROM trader_account WHERE Account_ID =" + req.session.currentAccount + "";
     connection.query(findBalance, function (err, foundBalance) {
         if (err) {
             throw err;
@@ -134,15 +139,15 @@ router.post("/transaction", function (req, res) {
         }
 
         if (foundBalance[0].Account_Balance < 0) {
-            //console.log("err Account_Balance must greater than 0");
+            console.log("err Account_Balance must greater than 0");
             res.redirect("/profiles/transaction");
         }
-        var insertTransaction = "INSERT INTO transaction(Transaction_Type,Transaction_Amount,Account_ID) VALUES ('" + Transaction_Type + "'," + Transaction_Amount + "," + Account_ID + ")";
+        var insertTransaction = "INSERT INTO transaction(Transaction_Type,Transaction_Amount,Account_ID) VALUES ('" + Transaction_Type + "'," + Transaction_Amount + "," + req.session.currentAccount + ")";
         connection.query(insertTransaction, function (err, foundTransaction) {
             if (err) {
                 throw err;
             }
-            var updateBalance = "UPDATE trader_account SET 	Account_Balance = " + foundBalance[0].Account_Balance + " WHERE Account_ID = " + Account_ID + " ";
+            var updateBalance = "UPDATE trader_account SET 	Account_Balance = " + foundBalance[0].Account_Balance + " WHERE Account_ID = " + req.session.currentAccount + " ";
             connection.query(updateBalance, function (err, foundupdateBalance) {
                 if (err) {
                     throw err;
@@ -155,16 +160,23 @@ router.post("/transaction", function (req, res) {
 
 
 router.get("/history", function (req, res) {
-    var findTransaction = "SELECT * FROM transaction t, trader_account a, trader_data d WHERE t.Account_ID = a.Account_ID AND a.Trader_Personal_ID = d.Trader_Personal_ID AND d.Username ='" + req.session.username + "'";
+    var findTransaction = "SELECT * FROM transaction WHERE Account_ID = '" +req.session.currentAccount +"'";
+    var findOrder = "SELECT * FROM stock_order WHERE Order_Status !='Q' AND Account_ID = '"+req.session.currentAccount+"'";
     connection.query(findTransaction, function (err, foundfindTransactions) {
-        if (err) {
-            throw err;
-        }
-        res.render("profiles/history", {
-            transactions: foundfindTransactions
-        });
+        if (err) throw err;
+        connection.query(findOrder, function (err, foundOrder) {
+            if (err) throw err;
+            res.render("profiles/history", {
+                transactions: foundfindTransactions,
+                orders: foundOrder,
+            });
+        })
     })
-});
+})
 
+router.get("/portfolio", function (req, res) {
+    var volumeBuy = "SELECT Stock_Symbol,SUM(Order_Volume) as Order_Volume, FROM stock_order WHERE Order_Status ='M' AND Order_Type='Sell' AND Account_ID = '"+req.session.currentAccount+"' GROUP BY Stock_Symbol "
+    res.render("profiles/portfolio");
+})
 
 module.exports = router;

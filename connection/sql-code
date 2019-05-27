@@ -1,0 +1,95 @@
+CREATE VIEW portfolio as SELECT o1.Account_ID,o1.Stock_Symbol,(SELECT SUM(Order_Volume) FROM stock_order AS o2 WHERE o2.Order_Status ='M' AND o2.Order_Type = 'Buy' AND o1.Account_ID = o2.Account_ID AND o1.Stock_Symbol = o2.Stock_Symbol) AS volume FROM stock_order AS o1 GROUP BY o1.Account_ID,o1.Stock_Symbol
+
+
+SELECT Account_ID,Stock_Symbol,Order_Type,SUM(Order_Volume) FROM stock_order WHERE Order_Status ='M' GROUP BY Account_ID,Stock_Symbol
+
+CREATE VIEW portfolio as SELECT o1.Account_ID,o1.Stock_Symbol,(SELECT SUM(Order_Volume) FROM stock_order AS o2 WHERE o2.Order_Status ='M' AND o2.Order_Type = 'Buy' AND o1.Account_ID = o2.Account_ID AND o1.Stock_Symbol = o2.Stock_Symbol) - (SELECT SUM(Order_Volume) FROM stock_order AS o3 WHERE o3.Order_Status ='M' AND o3.Order_Type = 'Sell' AND o1.Account_ID = o3.Account_ID AND o1.Stock_Symbol = o3.Stock_Symbol) AS volume FROM stock_order AS o1 WHERE o1.Order_Status = 'M' GROUP BY o1.Account_ID,o1.Stock_Symbol
+
+
+CREATE VIEW portfolio as SELECT o1.Account_ID,o1.Stock_Symbol,
+COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o2 WHERE o2.Order_Status ='M' AND o2.Order_Type = 'Buy' AND o1.Account_ID = o2.Account_ID AND o1.Stock_Symbol = o2.Stock_Symbol),0)
+- 
+COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o3 WHERE o3.Order_Status ='M' AND o3.Order_Type = 'Sell' AND o1.Account_ID = o3.Account_ID AND 		o1.Stock_Symbol = o3.Stock_Symbol),0) AS volume 
+FROM stock_order AS o1 WHERE o1.Order_Status = 'M' GROUP BY o1.Account_ID,o1.Stock_Symbol
+
+
+
+CREATE VIEW cost as SELECT Account_ID,Stock_Symbol,Order_Price,Order_Type,Order_Volume,(Order_Price*Order_Volume) AS Cost FROM stock_order WHERE Order_Status ='M'
+
+
+
+CREATE VIEW portfolio as SELECT o1.Account_ID,o1.Stock_Symbol,
+COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o2 WHERE o2.Order_Status ='M' AND o2.Order_Type = 'Buy' AND o1.Account_ID = o2.Account_ID AND o1.Stock_Symbol = o2.Stock_Symbol),0)
+- 
+COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o3 WHERE o3.Order_Status ='M' AND o3.Order_Type = 'Sell' AND o1.Account_ID = o3.Account_ID AND 		o1.Stock_Symbol = o3.Stock_Symbol),0) AS volume,
+COALESCE((SELECT SUM(Cost) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),-1)
+/
+COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),1) 
+as average_cost,
+(SELECT Order_Price FROM current_price c WHERE o1.Stock_Symbol = c.Stock_Symbol AND  c.stock_date = CURDATE() AND c.Order_Type = o1.Order_Type) as market_Price,
+(
+(COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),-1) 
+-
+COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Sell'),0))
+*
+(COALESCE((SELECT SUM(Cost) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),-1)
+/
+COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),1)) 
+)
+as amount_price,
+(SELECT Order_Price FROM current_price c WHERE o1.Stock_Symbol = c.Stock_Symbol AND  c.stock_date = CURDATE() AND c.Order_Type = o1.Order_Type) 
+*
+(COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o2 WHERE o2.Order_Status ='M' AND o2.Order_Type = 'Buy' AND o1.Account_ID = o2.Account_ID AND o1.Stock_Symbol = o2.Stock_Symbol),0)
+- 
+COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o3 WHERE o3.Order_Status ='M' AND o3.Order_Type = 'Sell' AND o1.Account_ID = o3.Account_ID AND 		o1.Stock_Symbol = o3.Stock_Symbol),0)) AS market_value,
+(SELECT Order_Price FROM current_price c WHERE o1.Stock_Symbol = c.Stock_Symbol AND  c.stock_date = CURDATE() AND c.Order_Type = o1.Order_Type) 
+*
+(COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o2 WHERE o2.Order_Status ='M' AND o2.Order_Type = 'Buy' AND o1.Account_ID = o2.Account_ID AND o1.Stock_Symbol = o2.Stock_Symbol),0)
+- 
+COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o3 WHERE o3.Order_Status ='M' AND o3.Order_Type = 'Sell' AND o1.Account_ID = o3.Account_ID AND 		o1.Stock_Symbol = o3.Stock_Symbol),0))
+-
+(
+(COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),-1) 
+-
+COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Sell'),0))
+*
+(COALESCE((SELECT SUM(Cost) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),-1)
+/
+COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),1)) 
+) AS unrealized
+FROM stock_order AS o1 WHERE o1.Order_Status = 'M' GROUP BY o1.Account_ID,o1.Stock_Symbol
+
+
+
+CREATE VIEW current_price as SELECT m.stock_date,m.Stock_Symbol,o.Order_Price AS last_price FROM current_match_time m,stock_order o WHERE m.stock_date = DATE(o.Order_Time) AND m.stock_Time = TIME(o.Order_Time) AND m.Stock_Symbol = o.Stock_Symbol GROUP BY m.stock_date,m.Stock_Symbol
+
+CREATE VIEW current_match_time as SELECT DATE(Order_Time) as stock_date,MAX(TIME(Order_Time)) AS stock_Time,Stock_Symbol FROM stock_order WHERE Order_Status ='M' GROUP BY DATE(Order_Time),Stock_Symbol
+
+
+CREATE VIEW stock_data1 as SELECT c1.Stock_Symbol,c1.stock_date,c1.last_price,(SELECT c2.last_price FROM current_price c2 WHERE c2.stock_date = c1.stock_date AND c2.Stock_Symbol = c1.Stock_Symbol) - COALESCE((SELECT c2.last_price FROM current_price c2 WHERE c2.stock_date = c1.stock_date-1 AND c2.Stock_Symbol = c1.Stock_Symbol),(SELECT c2.last_price FROM current_price c2 WHERE c2.stock_date = c1.stock_date AND c2.Stock_Symbol = c1.Stock_Symbol)) AS price_change FROM current_price c1 
+
+
+
+CREATE VIEW stock_data as SELECT c1.Stock_Symbol,c1.stock_date,c1.last_price,(SELECT c2.last_price FROM current_price c2 WHERE c2.stock_date = c1.stock_date AND c2.Stock_Symbol = c1.Stock_Symbol) - COALESCE((SELECT c2.last_price FROM current_price c2 WHERE c2.stock_date = c1.stock_date-1 AND c2.Stock_Symbol = c1.Stock_Symbol),(SELECT c2.last_price FROM current_price c2 WHERE c2.stock_date = c1.stock_date AND c2.Stock_Symbol = c1.Stock_Symbol)) AS price_change, MAX(o.Order_Price) as high_price,MIN(o.Order_Price) as low_price,c1.last_price + (c1.last_price*0.3) as ceil_price,c1.last_price - (c1.last_price*0.3) as floor_price,(SELECT SUM(v.stock_value) FROM stock_val_vol v WHERE c1.Stock_Symbol = v.Stock_Symbol AND c1.stock_date = v.stock_date) as stock_value,(SELECT SUM(v.stock_volume) FROM stock_val_vol v WHERE c1.Stock_Symbol = v.Stock_Symbol AND c1.stock_date = v.stock_date) as stock_volume  FROM current_price c1,stock_order o WHERE o.Order_Status = 'M' AND o.Stock_Symbol = c1.Stock_Symbol AND Date(o.Order_Time) = c1.stock_date GROUP BY c1.Stock_Symbol,c1.stock_date 
+
+
+
+
+CREATE VIEW stock_val_vol as SELECT DATE(Order_Time) as stock_date,Stock_Symbol,Order_Price * Order_Volume as stock_value,Order_Volume as stock_volume FROM stock_order WHERE Order_Status = 'M' AND Order_Type ='Buy' 
+
+
+
+
+
+
+//////
+
+CREATE VIEW current_price as SELECT m.stock_date,m.Stock_Symbol,s.Market_Type,o.Order_Price AS last_price FROM current_match_time m,stock_order o,stock_symbol s WHERE m.stock_date = DATE(o.Order_Time) AND m.stock_Time = TIME(o.Order_Time) AND m.Stock_Symbol = o.Stock_Symbol AND s.Stock_Symbol = m.Stock_Symbol GROUP BY m.stock_date,m.Stock_Symbol
+
+
+CREATE VIEW cur_mar_price as SELECT DATE(d.stock_date) as stock_date,s.Market_Type,SUM(d.last_price)/ COUNT(d.stock_symbol) as last_price FROM stock_data d,stock_symbol s WHERE s.Stock_Symbol = d.Stock_Symbol GROUP BY DATE(d.stock_date),s.Market_Type
+
+
+CREATE VIEW market_val_vol as SELECT d.stock_date,s.Market_Type,d.Stock_Symbol,d.stock_value*d.stock_volume as stock_value,d.stock_volume FROM stock_data d,stock_symbol s WHERE d.Stock_Symbol = s.Stock_Symbol 
+
+CREATE VIEW market_data as SELECT c1.stock_date,c1.Market_Type,c1.last_price,(SELECT last_price FROM cur_mar_price c2 WHERE c1.stock_date = c2.stock_date AND c1.Market_Type = c2.Market_Type)- COALESCE((SELECT last_price FROM cur_mar_price c2 WHERE c2.stock_date = c1.stock_date-1 AND c1.Market_Type = c2.Market_Type),(SELECT last_price FROM cur_mar_price c2 WHERE c1.stock_date = c2.stock_date AND c1.Market_Type = c2.Market_Type)) as price_chage,(SELECT SUM(v.stock_value) FROM market_val_vol v WHERE c1.stock_date = v.stock_date AND v.Market_Type= c1.Market_Type) as market_value ,(SELECT SUM(v.stock_volume) FROM market_val_vol v WHERE c1.stock_date = v.stock_date AND v.Market_Type= c1.Market_Type) as stock_volume FROM cur_mar_price c1

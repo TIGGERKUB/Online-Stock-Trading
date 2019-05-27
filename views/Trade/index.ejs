@@ -1,16 +1,21 @@
 <% include ../partials/header %>
+<!--search-->
+<div class="container my-5">
+        <form class="form-inline" action="/trade" method="POST">
+            <div class="row">
+                <div class="col col-sm col-md col-lg col-xl text-right pt-2">
+                    <i class="fa fa-search" style="font-size: 24px;"></i>
+                </div>
+                <div class="col-9 col-sm-10 col-md-9 col-lg-9 col-xl-9">
+                    <input class="marketData tt-query" type="text" placeholder="Search Stock Symbol" name="searchStock">
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
 
-<!-- Search form -->
-<div class="container my-5" style="width: 50%;">
-    <form class="form-inline" action="/trade" method="POST">
-        <i class="fa fa-search" aria-hidden="true"></i>
-        <input class="form-control form-control-lg w-75 ml-3" type="text" placeholder="Search Stock Symbol"
-            name="searchStock">
-    </form>
-</div>
 <!-- content -->
-<% if(!stock){ %>
-<% }else{ %>
+<% if(stock){ %>
 <div class="container" style="width: 50%;">
     <div class="card">
         <div class="row pt-4">
@@ -52,19 +57,9 @@
             </div>
                 <div class="form-group col">
                     <label for="formGroupExampleInput">Symbol</label>
-                    <select class="form-control" name="Stock_Symbol">
-                        <% symbols.forEach(function(symbol){ %>
-                        <option value="<%=symbol.Stock_Symbol%>"><%=symbol.Stock_Symbol%></option>
-                        <% }); %>
-                    </select>
-                </div>
-                <div class="form-group col">
-                    <label for="formGroupExampleInput">ACCOUNT ID</label>
-                    <select class="form-control" name="Account_ID">
-                        <% accounts.forEach(function(account){ %>
-                        <option value="<%=account.Account_ID%>"><%=account.Account_ID%></option>
-                        <% }); %>
-                    </select>
+                        <div class="col-9 col-sm-10 col-md-9 col-lg-9 col-xl-9">
+                            <input class="marketData tt-query" type="text" placeholder="Search Stock Symbol" name="Stock_Symbol">
+                        </div>
                 </div>
             </div>
 
@@ -103,7 +98,6 @@
                 <th scope="col">Type</th>
                 <th scope="col">Price</th>
                 <th scope="col">Volume</th>
-                <th scope="col">Profit</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -113,7 +107,7 @@
                 <th scope="row"><%=order.Order_No%></th>
                 <td><%=order.Stock_Symbol%></td>
                 <td><%=order.Account_ID%></td>
-                <td><%=order.Order_Time.toDateString()%></td>
+                <td><%=order.Order_Time%></td>
                 <td><%=order.Order_Status%></td>
                 <% if (order.Order_Type === 'Buy') { %>
                 <td class="text-success"><%=order.Order_Type%></td>
@@ -124,7 +118,7 @@
                 <td><%=order.Order_Volume%></td>
                 <td></td>
                 <td>
-                    <form action="/trade" method="POST">
+                    <form action="/trade/cancel/<%=order.Order_No%>?_method=PUT" method="POST">
                         <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
                     </form>
                 </td>

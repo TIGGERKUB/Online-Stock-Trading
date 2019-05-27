@@ -25,25 +25,38 @@
 			<tr>
 				<th scope="col">Market Type</th>
 				<th scope="col">Last Price</th>
-				<th scope="col">% Price Change</th>
+				<th scope="col">Price Change</th>
+				<!-- <th scope="col">% Price Change</th> -->
 				<th scope="col">Volume</th>
-				<th scope="col">Value(million baht)</th>
+				<th scope="col">Value</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td scope="row">SET</td>
-				<td>Mark</td>
-				<td>Otto</td>
-				<td>@mdo</td>
-				<td>@mdo</td>
+				<td scope="row"><%= market_mai.Market_Type%></td>
+				<td><%=market_mai.last_price%></td>
+				<% if(market_mai.price_chage > 0){ %>
+				<td class="text-success"><%=market_mai.price_chage%></td>
+				<% }else if(market_mai.price_chage < 0){ %>
+				<td class="text-danger"><%=market_mai.price_chage%></td>
+				<% }else{ %>
+				<td><%=market_mai.price_chage%></td>
+				<% } %>
+				<td><%=market_mai.stock_volume%></td>
+				<td><%=market_mai.market_value%></td>
 			</tr>
 			<tr>
-				<td scope="row">mai</td>
-				<td>Jacob</td>
-				<td>Thornton</td>
-				<td>@fat</td>
-				<td>@mdo</td>
+				<td scope="row"><%= market_SET.Market_Type%></td>
+				<td><%=market_SET.last_price%></td>
+				<% if(market_SET.price_chage > 0){ %>
+					<td class="text-success"><%=market_SET.price_chage%></td>
+					<% }else if(market_SET.price_chage < 0){ %>
+					<td class="text-danger"><%=market_SET.price_chage%></td>
+					<% }else{ %>
+					<td><%=market_SET.price_chage%></td>
+					<% } %>
+				<td><%=market_SET.stock_volume%></td>
+				<td><%=market_SET.market_value%></td>
 			</tr>
 		</tbody>
 	</table>
@@ -77,41 +90,28 @@
 					<thead class="thead-dark">
 						<tr>
 							<th scope="col">Stock Symbol</th>
-							<th scope="col">Volume</th>
 							<th scope="col">Last Price</th>
+							<th scope="col">Volume</th>
+							<th scope="col">Value</th>
 							<th scope="col">Price Change</th>
-							<th scope="col">% Price Change</th>
 						</tr>
 					</thead>
 					<tbody>
+						<% topGainers.forEach(function(topGainer){ %>
 						<tr>
-							<td scope="row">1</td>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td>@mdo</td>
-							<td>@mdo</td>
+							<td scope="row"><%=topGainer.Stock_Symbol%></td>
+							<td><%=topGainer.last_price%></td>
+							<td><%=topGainer.stock_value%></td>
+							<td><%=topGainer.stock_volume %></td>
+							<% if(topGainer.price_change > 0){ %>
+								<td class="text-success"><%=topGainer.price_change%></td>
+								<% }else if(topGainer.price_change < 0){ %>
+								<td class="text-danger"><%=topGainer.price_change%></td>
+								<% }else{ %>
+								<td><%=topGainer.price_change%></td>
+								<% } %>
 						</tr>
-						<tr>
-							<td scope="row">2</td>
-							<td>Jacob</td>
-							<td>Thornton</td>
-							<td>@fat</td>
-							<td>@mdo</td>
-						</tr>
-						<tr>
-							<td scope="row">3</td>
-							<td>Larry</td>
-							<td>the Bird</td>
-							<td>@twitter</td>
-							<td>@mdo</td>
-						</tr>
-						<tr>
-							<td scope="row">4</td>
-							<td>Larry</td>
-							<td>the Bird</td>
-							<td>@twitter</td>
-							<td>@mdo</td>
-						</tr>
+						<% }); %>
 					</tbody>
 				</table>
 			</div>

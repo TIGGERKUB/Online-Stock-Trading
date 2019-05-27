@@ -8,10 +8,11 @@ var expressSanitizer = require("express-sanitizer");
 
 
 //requring route
+var home = require("./routes/user/home");
+var welcome = require("./routes/user/welcome");
 var marketData = require("./routes/user/marketData");
 var profiles = require("./routes/user/profiles");
 var trade = require("./routes/user/trade");
-var portfolio = require("./routes/user/portfolio");
 var auth = require("./routes/auth");
 var admin = require("./routes/admin/index");
 var adminAccount = require("./routes/admin/account");
@@ -29,6 +30,9 @@ app.use(session({
 app.use(function(req,res,next){
     res.locals.CurrentPage = req.session.page;
     res.locals.currentUser = req.session.username;
+    res.locals.allAccount = req.session.allAccount;
+    res.locals.currentAccount = req.session.currentAccount;
+    res.locals.currentBalance = req.session.currentBalance;
     next();
 })
 
@@ -37,16 +41,13 @@ app.use(expressSanitizer());
 
 
 app.use("/",auth);
+app.use("/",home);
+app.use("/welcome",welcome);
 app.use("/market_data",marketData);
 app.use("/profiles",profiles);
 app.use("/trade",trade);
-app.use("/portfolio",portfolio);
 app.use("/admin",admin);
 app.use("/admin",adminAccount);
-
-app.get("/",function(req,res){
-    res.render("home/index");
-})
 
 
 var server=app.listen(3000,function(){
