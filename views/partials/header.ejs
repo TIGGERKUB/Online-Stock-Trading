@@ -37,12 +37,12 @@
 						<a class="nav-link text-white" href="/trade">Trade</a>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Profile
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="/Portfolio">Portfolio</a>
+							<a class="dropdown-item" href="/profiles/Portfolio">Portfolio</a>
 							<a class="dropdown-item" href="/profiles/accounts">Account</a>
 							<a class="dropdown-item" href="/profiles/transaction">Transaction</a>
 							<a class="dropdown-item" href="/profiles/history">History</a>
@@ -51,21 +51,21 @@
 						</div>
 					</li>
 					<% }else if(currentUser){ %>
-						<li class="nav-item">
-							<a class="nav-link text-white" href="/trade">Trade</a>
-						</li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false">
-								Profile
-							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="/Portfolio">Portfolio</a>
-								<a class="dropdown-item" href="/profiles/accounts">Account</a>
-								<a class="dropdown-item" href="/profiles/transaction">Transaction</a>
-								<a class="dropdown-item" href="/profiles/history">History</a>
-							</div>
-						</li>
+					<li class="nav-item">
+						<a class="nav-link text-white" href="/trade">Trade</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Profile
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="/profiles/Portfolio">Portfolio</a>
+							<a class="dropdown-item" href="/profiles/accounts">Account</a>
+							<a class="dropdown-item" href="/profiles/transaction">Transaction</a>
+							<a class="dropdown-item" href="/profiles/history">History</a>
+						</div>
+					</li>
 					<% } %>
 				</ul>
 
@@ -77,10 +77,31 @@
 					<a class="btn btn-primary my-2 mr-sm-2" href="/register">SIGN UP</a>
 				</form>
 				<% }else{ %>
-				<span class="navbar-text">
-					<a class="nav-item nav-link active text-white" href="#">Welcome, <%= currentUser %><span
+				<!-- <span class="navbar-text">
+					<a class="nav-item nav-link active text-white" href="#">Welcome <%= currentUser %><span
 							class="sr-only">(current)</span></a>
-				</span>
+				</span> -->
+				<% if(allAccount.length == 1){ %>
+					<p><%= currentBalance %> $</p>
+					<h2><%= currentAccount %></h2>
+					<a class="nav-item nav-link active text-white" href="#">Welcome <%=currentUser%><span
+						class="sr-only">(current)</span></a>
+					<% }else if(allAccount != ''){ %>
+						<p><%= currentBalance %> $</p>
+						<h2><%= currentAccount %></h2>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome <%= currentUser %></a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<% allAccount.forEach(function(account){ %>
+								<a class="dropdown-item" href="/welcome/<%=account.Account_ID%>/<%=account.Account_Balance%>"><%=account.Account_ID%></a>
+								<% }); %>
+							</div>
+						</li>
+					<% }else{ %>
+						<a class="nav-item nav-link active text-white" href="#">Welcome <%=currentUser%><span
+								class="sr-only">(current)</span></a>
+					<% } %>
 				<a class="btn btn-outline-danger my-2 mr-sm-2" href="/logout">Log out</a>
 				<% } %>
 			</div>

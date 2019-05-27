@@ -1,7 +1,7 @@
 <% include ../partials/header %>
 <% include ../partials/profilesHead %>
 
-
+<% if (currentAccount != -1) { %>
 <h1 class="display-1">Transaction</h1>
 <hr>
 <div class="container">
@@ -14,16 +14,6 @@
                 <select class="form-control" name="Transaction_Type">
                     <option value="Deposit">Deposit</option>
                     <option value="Withdraw">Withdraw</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-4 col-form label">Account</label>
-            <div class="col-sm-6">
-                <select class="form-control" name="Account_ID">
-                    <% accounts.forEach(function(account){ %>
-                        <option value="<%=account.Account_ID%>"><%=account.Account_ID%></option>
-                        <% }); %>
                 </select>
             </div>
         </div>
@@ -43,5 +33,9 @@
         <button class="btn btn-primary btn-block" type="submit">Confirm Transaction</button>
     </form>
     <div>
+<% }else{ %>
+    <br><br><br>
+    <h1 align="center"><a href="/profiles/accounts">Please Open your account before</a></h1>
+<% } %>
         <% include ../partials/profilesFoot %>
         <% include ../partials/footer %>
