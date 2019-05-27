@@ -53,30 +53,25 @@
 <div class="container mb-5">
 	<div class="card">
 		<div class="card-body">
-			<div class="card-title row mx-auto">
-				<div class="dropdown mx-2 pl-3">
-					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						SET
-					</button>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="#">SET</a>
-						<a class="dropdown-item" href="#">mai</a>
-					</div>
-				</div>
-				<div class="dropdown">
-					<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Top 10 gainer
-					</button>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="#">Top 10 gainer</a>
-						<a class="dropdown-item" href="#">Top 20 stocks volume trading</a>
-						<a class="dropdown-item" href="#">Top 20 stocks value trading</a>
+			<div class="card-title">
+				<div class="container">
+					<div class="row justify-content start">
+						<div class="col-2">
+							<select class="custom-select">
+								<option value="set">SET</option>
+								<option value="mai">mai</option>
+							</select>
+						</div>
+						<div class="col-4">
+							<select class="custom-select">
+								<option value="top-gainer">Top 10 gainer</option>
+								<option value="top-volume">Top 20 stocks volume trading</option>
+								<option value="top-value">Top 20 stocks value trading</option>
+							</select>
+						</div>
 					</div>
 				</div>
 			</div>
-
 			<div class="card-body">
 				<table class="table table-bordered table-striped">
 					<thead class="thead-dark">
