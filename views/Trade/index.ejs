@@ -1,18 +1,18 @@
 <% include ../partials/header %>
 <!--search-->
 <div class="container my-5">
-        <form class="form-inline" action="/trade" method="POST">
-            <div class="row">
-                <div class="col col-sm col-md col-lg col-xl text-right pt-2">
-                    <i class="fa fa-search" style="font-size: 24px;"></i>
-                </div>
-                <div class="col-9 col-sm-10 col-md-9 col-lg-9 col-xl-9">
-                    <input class="marketData tt-query" type="text" placeholder="Search Stock Symbol" name="searchStock">
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
+    <form class="form-inline" action="/trade" method="POST">
+        <div class="row">
+            <div class="col col-sm col-md col-lg col-xl text-right pt-2">
+                <i class="fa fa-search" style="font-size: 24px;"></i>
             </div>
-        </form>
-    </div>
+            <div class="col-9 col-sm-10 col-md-9 col-lg-9 col-xl-9">
+                <input class="marketData tt-query" type="text" placeholder="Search Stock Symbol" name="searchStock">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
 
 <!-- content -->
 <% if(stock){ %>
@@ -45,43 +45,40 @@
     <form action="/trade" method="POST">
         <div class="row">
             <div class="col-1">
-                <br>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="Order_Type" id="inlineRadio1" value="Buy" required>
+                    <input class="form-check-input" type="radio" name="Order_Type" id="inlineRadio1" value="Buy"
+                        required>
                     <label class="form-check-label" for="inlineRadio1">Buy</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="Order_Type" id="inlineRadio2" value="Sell" required>
+                    <input class="form-check-input" type="radio" name="Order_Type" id="inlineRadio2" value="Sell"
+                        required>
                     <label class="form-check-label" for="inlineRadio2">Sell</label>
                 </div>
             </div>
-                <div class="form-group col">
-                    <label for="formGroupExampleInput">Symbol</label>
-                        <div class="col-9 col-sm-10 col-md-9 col-lg-9 col-xl-9">
-                            <input class="marketData tt-query" type="text" placeholder="Search Stock Symbol" name="Stock_Symbol">
-                        </div>
-                </div>
+            <div class="form-group col">
+                <input class="marketData tt-query" type="text" name="Stock_Symbol" placeholder="Symbol" required>
             </div>
-
-
-            <div class="form-row">
-                <div class="col-1"></div>
-                <div class="form-group col-3">
-                    <input type="number" class="form-control" id="price" name="Order_Price" placeholder="Price" required>
-                </div>
-                <div class="form-group col-3">
-                    <input type="number" class="form-control" id="volume" name="Order_Volume" placeholder="Volume" required>
-                </div>
-                <div class="form-group col-2">
-                    <input type="number" class="form-control" id="pin" name="PIN" placeholder="PIN" required>
-                </div>
-                <div class="col-3">
-                    <button type="submit" class="btn btn-primary">Submit Order</button>
-                    <button type="submit" class="btn btn-secondary">Clear</button>
-                </div>
+            <div class="form-group col">
+                <input type="number" class="form-control" id="price" name="Order_Price" placeholder="Price" required>
             </div>
+            <div class="col-2"></div>
+        </div>
 
 
+        <div class="form-row">
+            <div class="col-1"></div>
+            <div class="form-group col">
+                <input type="number" class="form-control" id="volume" name="Order_Volume" placeholder="Volume" required>
+            </div>
+            <div class="form-group col">
+                <input type="number" class="form-control" id="pin" name="PIN" placeholder="PIN" required>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Submit Order</button>
+                <button type="submit" class="btn btn-secondary">Clear</button>
+            </div>
+        </div>
     </form>
 </div>
 

@@ -82,26 +82,34 @@
 							class="sr-only">(current)</span></a>
 				</span> -->
 				<% if(allAccount.length == 1){ %>
-					<p><%= currentBalance %> $</p>
-					<h2><%= currentAccount %></h2>
-					<a class="nav-item nav-link active text-white" href="#">Welcome <%=currentUser%><span
+				<h4 class="text-success"><%= currentBalance %> $ </h4>
+				<div class="px-2 mx-3" style="border-left: 1px solid gray;">
+					<h3 class="text-muted"> <%= currentAccount %> </h3>
+				</div>
+				<a class="nav-item nav-link active text-white" href="#">Welcome <%=currentUser%><span
 						class="sr-only">(current)</span></a>
-					<% }else if(allAccount != ''){ %>
-						<p><%= currentBalance %> $</p>
-						<h2><%= currentAccount %></h2>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome <%= currentUser %></a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<% allAccount.forEach(function(account){ %>
-								<a class="dropdown-item" href="/welcome/<%=account.Account_ID%>/<%=account.Account_Balance%>"><%=account.Account_ID%></a>
-								<% }); %>
-							</div>
-						</li>
-					<% }else{ %>
-						<a class="nav-item nav-link active text-white" href="#">Welcome <%=currentUser%><span
-								class="sr-only">(current)</span></a>
-					<% } %>
+
+				<% }else if(allAccount != ''){ %>
+				<h4 class="text-success"><%= currentBalance %> $ </h4>
+				<div class="px-2 mx-3" style="border-left: 1px solid gray;">
+					<h3 class="text-muted"> <%= currentAccount %> </h3>
+				</div>
+
+				<div class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome <%= currentUser %></a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<% allAccount.forEach(function(account){ %>
+						<a class="dropdown-item"
+							href="/welcome/<%=account.Account_ID%>/<%=account.Account_Balance%>"><%=account.Account_ID%></a>
+						<% }); %>
+					</div>
+				</div>
+
+				<% }else{ %>
+				<a class="nav-item nav-link active text-white" href="#">Welcome <%=currentUser%><span
+						class="sr-only">(current)</span></a>
+				<% } %>
 				<a class="btn btn-outline-danger my-2 mr-sm-2" href="/logout">Log out</a>
 				<% } %>
 			</div>

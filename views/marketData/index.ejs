@@ -21,105 +21,124 @@
 
 <% }else{ %>
 <div class="container">
-	<div class="card">
-		<div class="row pt-4">
-			<p class="card-title col col-xl col-sm-4 col-lg ml-5 display-3" id="stock-symbol"><%=stock.Stock_Symbol%>
-			</p>
-			<p class="col col-xl col-lg col-md col-sm-7 display-4">
-				Last Trade
-				<br>
-				<span class="display-4" id="stock-last" style="color: red;"><%=stock.Stock_last%></span>
-			</p>
+
+	<div class="row">
+		<div class="card mx-2 col">
+			<p>Graph</p>
 		</div>
-		<div class="row pb-4">
-			<p class="col col-xl col-lg col-md col-sm-5 display-4 ml-5">
-				Change
-				<br>
-				<span class="display-4" id="stock-change" style="color: red;">-0.25</span>
-			</p>
-			<p class="col col-xl col-lg col-md col-sm display-4">
-				% Change
-				<br>
-				<span class="display-4" id="stock-percent" style="color: red;">-0.52%</span>
-			</p>
+		<div class="card mx-2 py-2 px-4 col">
+			<h1 class="col" id="stock-symbol">
+				<%=stock.Stock_Symbol%>
+			</h1>
+			<div class="row mt-2">
+				<p class="col">
+					high Price: <span class="" id="stock-percent" style="color: red;">-0.52%</span>
+				</p>
+				<p class="col">
+					Last Price: <span class="" id="stock-last" style="color: red;"><%=stock.Stock_last%></span>
+				</p>
+
+			</div>
+			<div class="row">
+				<p class="col">
+					Low Price: <span class="" id="stock-change" style="color: red;">-0.25</span>
+				</p>
+				<p class="col">
+					Change: <span class="" id="stock-change" style="color: red;">-0.25</span>
+				</p>
+
+			</div>
+			<div class="row">
+				<p class="col">
+					Ceiling Price: <span class="" id="stock-percent" style="color: red;">-0.52%</span>
+				</p>
+				<p class="col">
+					Stock Value: <span class="" id="stock-percent" style="color: red;">-0.52%</span>
+				</p>
+			</div>
+			<div class="row">
+				<p class="col">
+					Floor Price: <span class="" id="stock-change" style="color: red;">-0.25</span>
+				</p>
+				<p class="col-6">
+					Stock Volume: <span class="" id="stock-change" style="color: red;">-0.25</span>
+				</p>
+			</div>
 		</div>
 	</div>
+
 </div>
 
-<div class="container-fluid row">
+
 	<!--show price history-->
-	<div class="col-12 col-md-12 col-sm-12 col-lg col-xl">
-		<div class="container py-5 px-2 text-center">
-			<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseExample"
-				aria-expanded="false" aria-controls="collapseExample">Show Price History</button>
-			<div class="collapse mt-3" id="collapseExample">
-				<table class="table table-bordered" style="font-size:0.85rem;">
-					<thead class="thead-dark">
-						<tr class="">
-							<th scope="col">Date</th>
-							<th scope="col">Last Price</th>
-							<th scope="col">High Price</th>
-							<th scope="col">Low Price</th>
-							<th scope="col">Price Change</th>
-							<th scope="col">Volume</th>
-							<th scope="col">Value</th>
-						</tr>
-					</thead>
-					<tbody>
-						<% historyPrice.forEach(function(stock){ %>
-						<% if(stock.price_change > 0){ %>
-						<tr class="table-success">
-							<% }else if(stock.price_change < 0){ %>
-						<tr class="table-danger">
-							<% }else{ %>
-						<tr>
-							<% } %>
-							<th scope="row"><%=stock.stock_date.toDateString()%></th>
-							<td><%=stock.last_price%></td>
-							<td><%=stock.high_price%></td>
-							<td><%=stock.low_price%></td>
-							<td><%=stock.price_change%></td>
-							<td><%=stock.stock_volume%></td>
-							<td><%=stock.stock_value%></td>
-						</tr>
-						<% }); %>
-					</tbody>
-				</table>
-			</div>
+<div class="container-fluid">
+	<div class="container py-5 px-2 text-center">
+		<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+			aria-expanded="false" aria-controls="collapseExample">Show Price History</button>
+		<div class="collapse mt-3" id="collapseExample">
+			<table class="table table-bordered" style="font-size:0.85rem;">
+				<thead class="thead-dark">
+					<tr class="">
+						<th scope="col">Date</th>
+						<th scope="col">Last Price</th>
+						<th scope="col">High Price</th>
+						<th scope="col">Low Price</th>
+						<th scope="col">Price Change</th>
+						<th scope="col">Volume</th>
+						<th scope="col">Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% historyPrice.forEach(function(stock){ %>
+					<% if(stock.price_change > 0){ %>
+					<tr class="table-success">
+						<% }else if(stock.price_change < 0){ %>
+					<tr class="table-danger">
+						<% }else{ %>
+					<tr>
+						<% } %>
+						<th scope="row"><%=stock.stock_date.toDateString()%></th>
+						<td><%=stock.last_price%></td>
+						<td><%=stock.high_price%></td>
+						<td><%=stock.low_price%></td>
+						<td><%=stock.price_change%></td>
+						<td><%=stock.stock_volume%></td>
+						<td><%=stock.stock_value%></td>
+					</tr>
+					<% }); %>
+				</tbody>
+			</table>
 		</div>
 	</div>
-	<!--show company detail-->
-	<div class="col">
-		<div class="container py-5 px-2 text-center">
-			<button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample2"
-				aria-expanded="false" aria-controls="collapseExample2">Show Company Detail</button>
-			<div class="collapse mt-3" id="collapseExample2">
-				<table class="table table-bordered" style="font-size:0.85rem;">
-					<thead class="thead-light">
-						<tr>
-							<th scope="col">Company Name</th>
-							<th scope="col">Owner Name</th>
-							<th scope="col">volume</th>
-							<th scope="col">Phone</th>
-							<th scope="col">Address</th>
-							<th scope="col">Industry group</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row"><%=company.Company_Name%></th>
-							<td><%=company.Company_Owner_Name%></td>
-							<td><%=company.volume%></td>
-							<td><%=company.Company_Phone%></td>
-							<td><%=company.Company_Address%></td>
-							<td><%=company.Company_Industry_group%></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
+
 </div>
+<!--show company detail-->
+<div class="container-fluid px-5" style="margin-bottom:10%;">
+	<h1>Company Detail</h1>
+	<table class="table table-bordered" style="font-size:0.85rem;">
+		<thead class="thead-light">
+			<tr>
+				<th scope="col">Company Name</th>
+				<th scope="col">Owner Name</th>
+				<th scope="col">volume</th>
+				<th scope="col">Phone</th>
+				<th scope="col">Address</th>
+				<th scope="col">Industry group</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th scope="row"><%=company.Company_Name%></th>
+				<td><%=company.Company_Owner_Name%></td>
+				<td><%=company.volume%></td>
+				<td><%=company.Company_Phone%></td>
+				<td><%=company.Company_Address%></td>
+				<td><%=company.Company_Industry_group%></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
 
 <% } %>
 
