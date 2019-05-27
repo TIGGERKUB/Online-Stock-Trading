@@ -7,55 +7,31 @@
             <tr>
                 <th scope="col">Symbol</th>
                 <th scope="col">Available Volume</th>
-                <th scope="col">Actual Volume</th>
                 <th scope="col">Average Cost</th>
                 <th scope="col">Market Price</th>
                 <th scope="col">Amount(Price)</th>
                 <th scope="col">Market Value</th>
                 <th scope="col">Unrealized P/L</th>
                 <th scope="col">%Unrealized P/L</th>
-                <th scope="col">Realized P/L</th>
+                <!-- <th scope="col">Realized P/L</th> -->
             </tr>
         </thead>
         <tbody>
+            <% portfolios.forEach(function(order){ %>
             <tr>
-                <th scope="row">BDMS</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
+                <th scope="row"><%=order.Stock_Symbol%></th>
+                <td><%=order.volume%></td>
+                <td><%=order.average_cost.toFixed(2)%></td>
+                <td><%=order.last_price%></td>
+                <td><%=order.Amount_Price%></td>
+                <td><%=order.Market_Value%></td>
+                <td><%=order.Unreal%></td>
+                <td><%=order.Per_Unreal.toFixed(2)%></td>
             </tr>
+            <% }); %>
+            <% if(allAccount != '' && portfolios !=''){ %>
             <tr>
-                <th scope="row">BH</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">CPALL</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <td colspan="4"></td>
+                <td colspan="3"></td>
                 <td>Total</td>
                 <td>272,472</td>
                 <td>341,068.50</td>
@@ -63,6 +39,7 @@
                 <td>+25.18%</td>
                 <td>0.00</td>
             </tr>
+            <% } %>
         </tbody>
     </table>
 </div>

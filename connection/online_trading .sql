@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2019 at 12:12 PM
+-- Generation Time: May 27, 2019 at 06:48 PM
 -- Server version: 10.1.40-MariaDB
 -- PHP Version: 7.3.5
 
@@ -21,6 +21,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `online_trading`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `agvcost`
+-- (See below for the actual view)
+--
+CREATE TABLE `agvcost` (
+`Account_ID` int(6)
+,`Stock_Symbol` varchar(6)
+,`volume` decimal(33,0)
+,`average_cost` double
+);
 
 -- --------------------------------------------------------
 
@@ -104,6 +117,21 @@ INSERT INTO `company` (`Company_Name`, `Company_Owner_Name`, `volume`, `Company_
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `cost`
+-- (See below for the actual view)
+--
+CREATE TABLE `cost` (
+`Account_ID` int(6)
+,`Stock_Symbol` varchar(6)
+,`Order_Price` float
+,`Order_Type` varchar(5)
+,`Order_Volume` int(10)
+,`Cost` double
+);
+
+-- --------------------------------------------------------
+
+--
 -- Stand-in structure for view `current_match_time`
 -- (See below for the actual view)
 --
@@ -122,6 +150,7 @@ CREATE TABLE `current_match_time` (
 CREATE TABLE `current_price` (
 `stock_date` date
 ,`Stock_Symbol` varchar(6)
+,`Order_Type` varchar(5)
 ,`Market_Type` varchar(6)
 ,`last_price` float
 );
@@ -136,6 +165,25 @@ CREATE TABLE `cur_mar_price` (
 `stock_date` date
 ,`Market_Type` varchar(6)
 ,`last_price` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `last_price_stock`
+-- (See below for the actual view)
+--
+CREATE TABLE `last_price_stock` (
+`MaxDate` date
+,`Stock_Symbol` varchar(6)
+,`last_price` float
+,`price_change` double
+,`high_price` float
+,`low_price` float
+,`ceil_price` double
+,`floor_price` double
+,`stock_value` double
+,`stock_volume` decimal(32,0)
 );
 
 -- --------------------------------------------------------
@@ -200,7 +248,11 @@ INSERT INTO `match_data` (`Match_ID`, `Match_Price`, `Match_Volume`, `Match_Time
 (28, 100, 100, '2019-05-26 09:39:24.482524'),
 (29, 100, 100, '2019-05-26 09:50:58.426770'),
 (30, 101, 123, '2019-05-26 09:55:37.467689'),
-(31, 123, 123, '2019-05-27 03:33:40.038783');
+(31, 123, 123, '2019-05-27 03:33:40.038783'),
+(32, 123, 123, '2019-05-27 10:16:42.161586'),
+(33, 123, 123, '2019-05-27 10:20:54.362751'),
+(34, 213, 213, '2019-05-27 10:24:58.094238'),
+(35, 213, 123, '2019-05-27 10:24:58.099224');
 
 -- --------------------------------------------------------
 
@@ -243,7 +295,28 @@ INSERT INTO `match_order` (`Order_No`, `Match_No`) VALUES
 (1096849, 29),
 (1096850, 30),
 (1096853, 30),
-(1096866, 31);
+(1096866, 31),
+(1096869, 32),
+(1096875, 33),
+(1096876, 33);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `portfolio`
+-- (See below for the actual view)
+--
+CREATE TABLE `portfolio` (
+`Account_ID` int(6)
+,`Stock_Symbol` varchar(6)
+,`volume` decimal(33,0)
+,`average_cost` double
+,`last_price` float
+,`Amount_Price` double
+,`Market_Value` double
+,`Unreal` double
+,`Per_Unreal` double
+);
 
 -- --------------------------------------------------------
 
@@ -354,10 +427,12 @@ INSERT INTO `stock_order` (`Order_No`, `Order_Time`, `Order_Status`, `Order_Pric
 (1096864, '2019-05-27 03:27:53.900189', 'C', 123, 'Sell', 213, 'AIS', 317828),
 (1096866, '2019-05-27 03:33:40.033798', 'C', 123, 'Buy', 123, 'FUCK', 611392),
 (1096868, '2019-05-27 03:45:35.829123', 'C', 66, 'Buy', 656, 'FUCK', 317828),
-(1096869, '2019-05-27 03:46:59.749764', 'Q', 123, 'Buy', 2131, 'CHEWA', 317828),
+(1096869, '2019-05-27 03:46:59.749764', 'M', 123, 'Buy', 2131, 'CHEWA', 317828),
 (1096870, '2019-05-27 03:48:20.930788', 'Q', 12222200, 'Sell', 21323, 'ABICO', 317828),
 (1096871, '2019-05-27 03:48:25.389975', 'Q', 12222200, 'Sell', 21323, 'ABICO', 317828),
-(1096872, '2019-05-27 03:58:36.679476', 'Q', 213, 'Sell', 213, 'AIS', 317828);
+(1096875, '2019-05-27 10:20:42.522835', 'M', 123, 'Sell', 123, 'AIS', 611392),
+(1096876, '2019-05-27 10:20:54.358761', 'M', 123, 'Buy', 123, 'AIS', 611392),
+(1096879, '2019-05-27 16:29:40.347579', 'C', 45, 'Sell', 45, 'AIS', 611392);
 
 -- --------------------------------------------------------
 
@@ -418,7 +493,7 @@ CREATE TABLE `trader_account` (
 INSERT INTO `trader_account` (`Account_ID`, `PIN`, `Account_Balance`, `Account_Type`, `Trader_Personal_ID`, `Broker_Symbol`) VALUES
 (226935, 111, 500000, 'Cash_Balance', '26262622', 'ASL'),
 (268406, 554, 51677, 'Cash_Balance', '12545', 'AIRA'),
-(317828, 561, 92199, 'Cash_Balance', '123456', 'AIRA'),
+(317828, 561, 592199, 'Cash_Balance', '123456', 'AIRA'),
 (379793, 111, 0, 'Cash_Balance', '123456', 'KSS'),
 (381824, 222, 283.5, 'Cash_Balance', '26262622', 'MBKET'),
 (417438, 121, 5110, 'Credit_Balance', '123456', 'KSS'),
@@ -426,7 +501,7 @@ INSERT INTO `trader_account` (`Account_ID`, `PIN`, `Account_Balance`, `Account_T
 (438042, 2345, 876, 'Cash_Balance', '26262622', 'ASL'),
 (531050, 111, 5123, 'Cash_Balance', '33333333333', 'ASL'),
 (562964, 111, 40000000000, 'Cash_Balance', '26262622', 'ASL'),
-(580429, 556, 60000000, 'Cash_Account', '123456', 'AIRA'),
+(580429, 556, 0, 'Cash_Account', '123456', 'AIRA'),
 (583928, 234, 12121, 'Cash_Balance', '26262622', 'ASL'),
 (611388, 123, 15452, 'Credit_Balance', '123456', 'ASL'),
 (611389, 333, 0, 'Credit_Balance', '123456', 'KSS'),
@@ -437,7 +512,8 @@ INSERT INTO `trader_account` (`Account_ID`, `PIN`, `Account_Balance`, `Account_T
 (611396, 232, 123, 'Cash_Balance', '12545', 'ASL'),
 (611397, 231, 0, 'Credit_Balance', '1445522', 'AIRA'),
 (611398, 123, 50000, 'Cash_Balance', '33232', 'AIRA'),
-(611399, 3213, 0, 'Credit_Balance', '7777', 'AEC');
+(611404, 213, 0, 'Cash_Balance', '7777', 'AEC'),
+(611405, 123, 500000, 'Cash_Balance', '7777', 'AEC');
 
 -- --------------------------------------------------------
 
@@ -509,7 +585,28 @@ INSERT INTO `transaction` (`Transaction_ID`, `Transaction_Type`, `Transaction_Ti
 (1081284, 'Withdraw', '2019-05-25 16:03:44.452741', 2656, 317828),
 (1081285, 'Deposit', '2019-05-26 09:35:12.899067', 50000, 611398),
 (1081287, 'Deposit', '2019-05-27 02:52:54.645753', 50000, 317828),
-(1081288, 'Withdraw', '2019-05-27 03:34:31.186302', 1321, 317828);
+(1081288, 'Withdraw', '2019-05-27 03:34:31.186302', 1321, 317828),
+(1081289, 'Deposit', '2019-05-27 16:00:36.199851', 500000, 317828),
+(1081290, 'Deposit', '2019-05-27 16:27:24.652351', 500000, 611405),
+(1081291, 'Withdraw', '2019-05-27 16:28:47.639936', 60000000, 580429);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `agvcost`
+--
+DROP TABLE IF EXISTS `agvcost`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `agvcost`  AS  select `o1`.`Account_ID` AS `Account_ID`,`o1`.`Stock_Symbol` AS `Stock_Symbol`,(coalesce((select sum(`o2`.`Order_Volume`) from `stock_order` `o2` where ((`o2`.`Order_Status` = 'M') and (`o2`.`Order_Type` = 'Buy') and (`o1`.`Account_ID` = `o2`.`Account_ID`) and (`o1`.`Stock_Symbol` = `o2`.`Stock_Symbol`))),0) - coalesce((select sum(`o3`.`Order_Volume`) from `stock_order` `o3` where ((`o3`.`Order_Status` = 'M') and (`o3`.`Order_Type` = 'Sell') and (`o1`.`Account_ID` = `o3`.`Account_ID`) and (`o1`.`Stock_Symbol` = `o3`.`Stock_Symbol`))),0)) AS `volume`,((coalesce((select sum(`c`.`Cost`) from `cost` `c` where ((`c`.`Account_ID` = `o1`.`Account_ID`) and (`o1`.`Stock_Symbol` = `c`.`Stock_Symbol`) and (`c`.`Order_Type` = 'Buy'))),-(1)) - coalesce((select sum(`c`.`Cost`) from `cost` `c` where ((`c`.`Account_ID` = `o1`.`Account_ID`) and (`o1`.`Stock_Symbol` = `c`.`Stock_Symbol`) and (`c`.`Order_Type` = 'Sell'))),-(0))) / (coalesce((select sum(`c`.`Order_Volume`) from `cost` `c` where ((`c`.`Account_ID` = `o1`.`Account_ID`) and (`o1`.`Stock_Symbol` = `c`.`Stock_Symbol`) and (`c`.`Order_Type` = 'Buy'))),1) - coalesce((select sum(`c`.`Order_Volume`) from `cost` `c` where ((`c`.`Account_ID` = `o1`.`Account_ID`) and (`o1`.`Stock_Symbol` = `c`.`Stock_Symbol`) and (`c`.`Order_Type` = 'Sell'))),0))) AS `average_cost` from `stock_order` `o1` where (`o1`.`Order_Status` = 'M') group by `o1`.`Account_ID`,`o1`.`Stock_Symbol` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `cost`
+--
+DROP TABLE IF EXISTS `cost`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `cost`  AS  select `stock_order`.`Account_ID` AS `Account_ID`,`stock_order`.`Stock_Symbol` AS `Stock_Symbol`,`stock_order`.`Order_Price` AS `Order_Price`,`stock_order`.`Order_Type` AS `Order_Type`,`stock_order`.`Order_Volume` AS `Order_Volume`,(`stock_order`.`Order_Price` * `stock_order`.`Order_Volume`) AS `Cost` from `stock_order` where (`stock_order`.`Order_Status` = 'M') ;
 
 -- --------------------------------------------------------
 
@@ -527,7 +624,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `current_price`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `current_price`  AS  select `m`.`stock_date` AS `stock_date`,`m`.`Stock_Symbol` AS `Stock_Symbol`,`s`.`Market_Type` AS `Market_Type`,`o`.`Order_Price` AS `last_price` from ((`current_match_time` `m` join `stock_order` `o`) join `stock_symbol` `s`) where ((`m`.`stock_date` = cast(`o`.`Order_Time` as date)) and (`m`.`stock_Time` = cast(`o`.`Order_Time` as time(6))) and (`m`.`Stock_Symbol` = `o`.`Stock_Symbol`) and (`s`.`Stock_Symbol` = `m`.`Stock_Symbol`)) group by `m`.`stock_date`,`m`.`Stock_Symbol` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `current_price`  AS  select `m`.`stock_date` AS `stock_date`,`m`.`Stock_Symbol` AS `Stock_Symbol`,`o`.`Order_Type` AS `Order_Type`,`s`.`Market_Type` AS `Market_Type`,`o`.`Order_Price` AS `last_price` from ((`current_match_time` `m` join `stock_order` `o`) join `stock_symbol` `s`) where ((`m`.`stock_date` = cast(`o`.`Order_Time` as date)) and (`m`.`stock_Time` = cast(`o`.`Order_Time` as time(6))) and (`m`.`Stock_Symbol` = `o`.`Stock_Symbol`) and (`s`.`Stock_Symbol` = `m`.`Stock_Symbol`)) group by `m`.`stock_date`,`m`.`Stock_Symbol` ;
 
 -- --------------------------------------------------------
 
@@ -537,6 +634,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `cur_mar_price`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `cur_mar_price`  AS  select cast(`d`.`stock_date` as date) AS `stock_date`,`s`.`Market_Type` AS `Market_Type`,(sum(`d`.`last_price`) / count(`d`.`Stock_Symbol`)) AS `last_price` from (`stock_data` `d` join `stock_symbol` `s`) where (`s`.`Stock_Symbol` = `d`.`Stock_Symbol`) group by cast(`d`.`stock_date` as date),`s`.`Market_Type` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `last_price_stock`
+--
+DROP TABLE IF EXISTS `last_price_stock`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `last_price_stock`  AS  select max(`stock_data`.`stock_date`) AS `MaxDate`,`stock_data`.`Stock_Symbol` AS `Stock_Symbol`,`stock_data`.`last_price` AS `last_price`,`stock_data`.`price_change` AS `price_change`,`stock_data`.`high_price` AS `high_price`,`stock_data`.`low_price` AS `low_price`,`stock_data`.`ceil_price` AS `ceil_price`,`stock_data`.`floor_price` AS `floor_price`,`stock_data`.`stock_value` AS `stock_value`,`stock_data`.`stock_volume` AS `stock_volume` from `stock_data` group by `stock_data`.`Stock_Symbol` ;
 
 -- --------------------------------------------------------
 
@@ -555,6 +661,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `market_val_vol`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `market_val_vol`  AS  select `d`.`stock_date` AS `stock_date`,`s`.`Market_Type` AS `Market_Type`,`d`.`Stock_Symbol` AS `Stock_Symbol`,(`d`.`stock_value` * `d`.`stock_volume`) AS `stock_value`,`d`.`stock_volume` AS `stock_volume` from (`stock_data` `d` join `stock_symbol` `s`) where (`d`.`Stock_Symbol` = `s`.`Stock_Symbol`) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `portfolio`
+--
+DROP TABLE IF EXISTS `portfolio`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `portfolio`  AS  select `a`.`Account_ID` AS `Account_ID`,`a`.`Stock_Symbol` AS `Stock_Symbol`,`a`.`volume` AS `volume`,`a`.`average_cost` AS `average_cost`,`l`.`last_price` AS `last_price`,(`a`.`volume` * `a`.`average_cost`) AS `Amount_Price`,(`l`.`last_price` * `a`.`volume`) AS `Market_Value`,((`l`.`last_price` * `a`.`volume`) - (`a`.`volume` * `a`.`average_cost`)) AS `Unreal`,((((`l`.`last_price` * `a`.`volume`) - (`a`.`volume` * `a`.`average_cost`)) / (`a`.`volume` * `a`.`average_cost`)) * 100) AS `Per_Unreal` from (`last_price_stock` `l` join `agvcost` `a`) where ((`l`.`Stock_Symbol` = `a`.`Stock_Symbol`) and (`a`.`volume` > 0)) ;
 
 -- --------------------------------------------------------
 
@@ -662,25 +777,25 @@ ALTER TABLE `transaction`
 -- AUTO_INCREMENT for table `match_data`
 --
 ALTER TABLE `match_data`
-  MODIFY `Match_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `Match_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `stock_order`
 --
 ALTER TABLE `stock_order`
-  MODIFY `Order_No` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1096873;
+  MODIFY `Order_No` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1096880;
 
 --
 -- AUTO_INCREMENT for table `trader_account`
 --
 ALTER TABLE `trader_account`
-  MODIFY `Account_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=611400;
+  MODIFY `Account_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=611406;
 
 --
 -- AUTO_INCREMENT for table `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `Transaction_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1081289;
+  MODIFY `Transaction_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1081292;
 
 --
 -- Constraints for dumped tables

@@ -22,9 +22,9 @@ CREATE VIEW portfolio as SELECT o1.Account_ID,o1.Stock_Symbol,
 COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o2 WHERE o2.Order_Status ='M' AND o2.Order_Type = 'Buy' AND o1.Account_ID = o2.Account_ID AND o1.Stock_Symbol = o2.Stock_Symbol),0)
 - 
 COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o3 WHERE o3.Order_Status ='M' AND o3.Order_Type = 'Sell' AND o1.Account_ID = o3.Account_ID AND 		o1.Stock_Symbol = o3.Stock_Symbol),0) AS volume,
-COALESCE((SELECT SUM(Cost) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),-1)
+COALESCE((SELECT SUM(Cost) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),-1) - COALESCE((SELECT SUM(Cost) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Sell'),-0)
 /
-COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),1) 
+COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),1) -COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Sell'),0) 
 as average_cost,
 (SELECT Order_Price FROM current_price c WHERE o1.Stock_Symbol = c.Stock_Symbol AND  c.stock_date = CURDATE() AND c.Order_Type = o1.Order_Type) as market_Price,
 (
@@ -93,3 +93,20 @@ CREATE VIEW cur_mar_price as SELECT DATE(d.stock_date) as stock_date,s.Market_Ty
 CREATE VIEW market_val_vol as SELECT d.stock_date,s.Market_Type,d.Stock_Symbol,d.stock_value*d.stock_volume as stock_value,d.stock_volume FROM stock_data d,stock_symbol s WHERE d.Stock_Symbol = s.Stock_Symbol 
 
 CREATE VIEW market_data as SELECT c1.stock_date,c1.Market_Type,c1.last_price,(SELECT last_price FROM cur_mar_price c2 WHERE c1.stock_date = c2.stock_date AND c1.Market_Type = c2.Market_Type)- COALESCE((SELECT last_price FROM cur_mar_price c2 WHERE c2.stock_date = c1.stock_date-1 AND c1.Market_Type = c2.Market_Type),(SELECT last_price FROM cur_mar_price c2 WHERE c1.stock_date = c2.stock_date AND c1.Market_Type = c2.Market_Type)) as price_chage,(SELECT SUM(v.stock_value) FROM market_val_vol v WHERE c1.stock_date = v.stock_date AND v.Market_Type= c1.Market_Type) as market_value ,(SELECT SUM(v.stock_volume) FROM market_val_vol v WHERE c1.stock_date = v.stock_date AND v.Market_Type= c1.Market_Type) as stock_volume FROM cur_mar_price c1
+
+
+
+
+
+CREATE VIEW agvcost as SELECT o1.Account_ID,o1.Stock_Symbol,
+COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o2 WHERE o2.Order_Status ='M' AND o2.Order_Type = 'Buy' AND o1.Account_ID = o2.Account_ID AND o1.Stock_Symbol = o2.Stock_Symbol),0)
+- 
+COALESCE((SELECT SUM(Order_Volume) FROM stock_order AS o3 WHERE o3.Order_Status ='M' AND o3.Order_Type = 'Sell' AND o1.Account_ID = o3.Account_ID AND 		o1.Stock_Symbol = o3.Stock_Symbol),0) AS volume,
+(COALESCE((SELECT SUM(Cost) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),-1) - COALESCE((SELECT SUM(Cost) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Sell'),-0))
+/
+(COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Buy'),1) -COALESCE((SELECT SUM(Order_Volume) FROM cost c WHERE c.Account_ID = o1.Account_ID AND o1.Stock_Symbol = c.Stock_Symbol AND c.Order_Type ='Sell'),0))
+as average_cost FROM stock_order AS o1 WHERE o1.Order_Status = 'M' GROUP BY o1.Account_ID,o1.Stock_Symbol
+
+CREATE VIEW lastPriceStock as SELECT MAX(stock_date) as MaxDate,Stock_Symbol,last_price,price_change,high_price,low_price,ceil_price,floor_price,stock_value,stock_volume FROM stock_data  GROUP BY Stock_Symbol
+
+CREATE VIEW portfolio as SELECT a.Account_ID,a.Stock_Symbol,a.volume,a.average_cost,l.last_price,(a.volume*a.average_cost) as Amount_Price,(l.last_price * a.volume) as Market_Value,((l.last_price * a.volume)-(a.volume*a.average_cost)) as Unreal,(((l.last_price * a.volume)-(a.volume*a.average_cost))/(a.volume*a.average_cost))*100 as Per_Unreal FROM last_price_stock l,agvcost a WHERE l.Stock_Symbol = a.Stock_Symbol AND a.volume >0 

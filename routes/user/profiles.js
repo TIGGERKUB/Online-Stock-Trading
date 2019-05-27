@@ -9,7 +9,7 @@ router.get("/accounts", function (req, res) {
         if (result.length > 0) {
             req.session.currentAccount = result[0].Account_ID;
             req.session.currentBalance = result[0].Account_Balance;
-        }else{
+        } else {
             req.session.currentAccount = -1;
             req.session.currentBalance = -1;
         }
@@ -160,8 +160,8 @@ router.post("/transaction", function (req, res) {
 
 
 router.get("/history", function (req, res) {
-    var findTransaction = "SELECT * FROM transaction WHERE Account_ID = '" +req.session.currentAccount +"'";
-    var findOrder = "SELECT * FROM stock_order WHERE Order_Status !='Q' AND Account_ID = '"+req.session.currentAccount+"'";
+    var findTransaction = "SELECT * FROM transaction WHERE Account_ID = '" + req.session.currentAccount + "'";
+    var findOrder = "SELECT * FROM stock_order WHERE Order_Status !='Q' AND Account_ID = '" + req.session.currentAccount + "'";
     connection.query(findTransaction, function (err, foundfindTransactions) {
         if (err) throw err;
         connection.query(findOrder, function (err, foundOrder) {
@@ -175,8 +175,11 @@ router.get("/history", function (req, res) {
 })
 
 router.get("/portfolio", function (req, res) {
-    var volumeBuy = "SELECT Stock_Symbol,SUM(Order_Volume) as Order_Volume, FROM stock_order WHERE Order_Status ='M' AND Order_Type='Sell' AND Account_ID = '"+req.session.currentAccount+"' GROUP BY Stock_Symbol "
-    res.render("profiles/portfolio");
+    var sql = "SELECT * FROM portfolio WHERE Account_ID = '" + req.session.currentAccount + "' "
+    connection.query(sql, function (err, portfolio) {
+        if (err) throw err;
+        res.render("profiles/portfolio",{portfolios:portfolio});
+    })
 })
 
 module.exports = router;
