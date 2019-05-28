@@ -1,15 +1,16 @@
 <% include ../partials/header %>
 <!--search-->
-<div class="container my-5">
+<div class="container mt-5">
     <form class="form-inline" action="/trade" method="POST">
         <div class="row">
-            <div class="col col-sm col-md col-lg col-xl text-right pt-2">
+            <div class="col"></div>
+            <div class="col text-right pt-2">
                 <i class="fa fa-search" style="font-size: 24px;"></i>
             </div>
-            <div class="col-9 col-sm-10 col-md-9 col-lg-9 col-xl-9">
+            <div class="col">
                 <input class="marketData tt-query" type="text" placeholder="Search Stock Symbol" name="searchStock">
+                <button type="submit" class="btn btn-primary" style="visibility: hidden;">Search</button>
             </div>
-            <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
 </div>
@@ -17,25 +18,47 @@
 <!-- content -->
 <% if(stock){ %>
 <div class="container" style="width: 50%;">
-    <div class="card">
-        <div class="row pt-4">
-            <p class="card-title col ml-5 display-3" id="stock-symbol"><%=stock.Stock_Symbol%></p>
-            <p class="col display-4">
-                Last Trade
-                <br>
-                <span class="display-4" id="stock-last" style="color: red;"><%=stock.Stock_last%></span>
+    <div class="card mr-2 py-2 px-4">
+        <h1 class="col" id="stock-symbol">
+            <%=stock.Stock_Symbol%>
+        </h1>
+        <div class="row mt-2">
+            <p class="col">
+                high Price:<span class="text-success" id="stock-percent"><%=stock.high_price%></span>
+            </p>
+            <h4 class="col">
+                Last Price: <span class="text-secondary" id="stock-last"><%=stock.last_price%></span>
+            </h4>
+
+        </div>
+        <div class="row">
+            <p class="col">
+                Low Price:<span class="text-danger" id="stock-change"><%=stock.low_price%></span>
+            </p>
+            <p class="col">
+                Change:
+                <% if(stock.price_change >= 0){ %>
+                <span class="text-success" id="stock-change"><%=stock.price_change%></span>
+                <% }else{%>
+                <span class="text-danger" id="stock-change"><%=stock.price_change%></span>
+                <% } %>
+            </p>
+
+        </div>
+        <div class="row">
+            <p class="col">
+                Ceiling Price: <span class="text-success" id="stock-percent"><%=stock.ceil_price%></span>
+            </p>
+            <p class="col">
+                Stock Value: <span class="text-secondary" id="stock-percent"><%=stock.stock_value%></span>
             </p>
         </div>
-        <div class="row pb-4">
-            <p class="col display-4 ml-5">
-                Change
-                <br>
-                <span class="display-4" id="stock-change" style="color: red;">-0.25</span>
+        <div class="row">
+            <p class="col">
+                Floor Price: <span class="text-danger" id="stock-change"><%=stock.floor_price%></span>
             </p>
-            <p class="col display-4">
-                % Change
-                <br>
-                <span class="display-4" id="stock-percent" style="color: red;">-0.52%</span>
+            <p class="col-6">
+                Stock Volume: <span class="text-secondary" id="stock-change"><%=stock.stock_volume%></span>
             </p>
         </div>
     </div>

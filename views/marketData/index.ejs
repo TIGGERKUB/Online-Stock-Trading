@@ -10,7 +10,7 @@
 			<div class="col-9 col-sm-10 col-md-9 col-lg-9 col-xl-9">
 				<input class="marketData tt-query" type="text" placeholder="Search Stock Symbol" name="searchStock">
 			</div>
-			<button type="submit" class="btn btn-primary">Search</button>
+			<button type="submit" class="btn btn-primary" style="visibility: hidden">Search</button>
 		</div>
 	</form>
 </div>
@@ -24,17 +24,17 @@
 		<div class="card mx-2 col">
 				<canvas id="line-Stock"  width="30%" height="15%"></canvas>
 		</div>
-		<div class="card mx-2 py-2 px-4 col">
+		<div class="card mx-2 pt-3 px-4 col">
 			<h1 class="col" id="stock-symbol">
 				<%=stock.Stock_Symbol%>
 			</h1>
-			<div class="row mt-2">
+			<div class="row">
 				<p class="col">
 					high Price:<span class="text-success" id="stock-percent" ><%=stock.high_price%></span>
 				</p>
-				<p class="col">
-					Last Price: <span class="" id="stock-last" ><%=stock.last_price%></span>
-				</p>
+				<h4 class="col">
+					Last Price: <span class="text-secondary" id="stock-last" ><%=stock.last_price%></span>
+				</h4>
 
 			</div>
 			<div class="row">
@@ -56,7 +56,7 @@
 					Ceiling Price: <span class="text-success" id="stock-percent" ><%=stock.ceil_price%></span>
 				</p>
 				<p class="col">
-					Stock Value: <span class="" id="stock-percent" ><%=stock.stock_value%></span>
+					Stock Value: <span class="text-secondary" id="stock-percent" ><%=stock.stock_value%></span>
 				</p>
 			</div>
 			<div class="row">
@@ -64,7 +64,7 @@
 					Floor Price: <span class="text-danger" id="stock-change" ><%=stock.floor_price%></span>
 				</p>
 				<p class="col-6">
-					Stock Volume: <span class="" id="stock-change" ><%=stock.stock_volume%></span>
+					Stock Volume: <span class="text-secondary" id="stock-change" ><%=stock.stock_volume%></span>
 				</p>
 			</div>
 		</div>
