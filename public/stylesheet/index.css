@@ -1,8 +1,8 @@
 #graph-1{
-	height: 300px;
+	height: 400px;
 }
 #graph-2{
-	height: 300px;
+	height: 400px;
 }
 
 .thumbnail{
@@ -36,7 +36,7 @@
 	font-size: 24px;
 	height: 50px;
 	padding: 8px 12px;
-	width: 130%;
+	width: 500px;
 }
 
 .tt-query {
@@ -49,7 +49,7 @@
 	background-color: #FFFFFF;
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	padding: 8px 0;
-	width: 130%;
+	width: 500px;
 }
 .tt-suggestion {
 	font-size: 24px;

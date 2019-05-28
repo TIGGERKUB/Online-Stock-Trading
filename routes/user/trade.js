@@ -25,7 +25,7 @@ router.post("/", function (req, res) {
     var PIN = req.body.PIN;
     var searchStock = req.body.searchStock;
     console.log(searchStock);
-    var findStock = "SELECT * FROM stock_symbol WHERE Stock_Symbol = '" + searchStock + "' ";
+    var findStock = "SELECT * FROM last_price_stock WHERE Stock_Symbol = '" + searchStock + "' ";
     connection.query(findStock, function (err, foundStocks) {
         if (err) {
             throw err;

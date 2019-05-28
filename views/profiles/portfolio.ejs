@@ -56,10 +56,14 @@
     </table>
 </div>
 <% if(allAccount != '' && portfolios !=''){ %>
-    <canvas id="Available-Volume" width="20%" height="7%"></canvas>
-    <hr>
-    <br>
-    <canvas id="total_graph" width="20%" height="7%"></canvas>
+    <div class="row mb-5">
+        <div class="col">
+        <canvas id="Available-Volume"></canvas>
+        </div>
+        <div class="col">    
+        <canvas id="total_graph"></canvas>
+        </div>
+    </div>
 <% } %>
 
 
