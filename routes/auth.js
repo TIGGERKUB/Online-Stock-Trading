@@ -64,6 +64,7 @@ router.post("/login", function (req, res) {
             if (results.length > 0) {
                 req.session.loggedin = true;
                 req.session.username = username;
+                req.flash("success","welcome to yelp camp" + req.session.username);
                 res.redirect('/storeAccountUser');
             } else {
                 res.redirect('/');
@@ -79,6 +80,7 @@ router.post("/login", function (req, res) {
 
 //logout routes
 router.get("/logout", function (req, res) {
+    req.flash("success","Logged you out!");
     req.session.destroy();
     res.redirect("/");
 });

@@ -149,6 +149,14 @@ function cancelOrderDate() {
 }
 
 
+// middlewareObj.isLoggedIn = function(req,res,next){
+//     if(req.isAuthenticated()){
+//         return next();
+//     }
+//     req.flash("error","YOU NEED TO BE LOGGED IN TO DO THAT!");
+//     res.redirect("/login");
+// }
+
 
 
 module.exports = router;

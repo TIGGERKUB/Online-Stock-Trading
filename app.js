@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 var session = require('express-session');
 var methodOverride = require("method-override");
 var expressSanitizer = require("express-sanitizer");
-
+var flash = require('connect-flash');
 
 
 //requring route
@@ -30,14 +30,22 @@ app.use(session({
 	saveUninitialized: true
 }));
 
+app.use(flash());
+
 app.use(function(req,res,next){
     res.locals.CurrentPage = req.session.page;
     res.locals.currentUser = req.session.username;
     res.locals.allAccount = req.session.allAccount;
     res.locals.currentAccount = req.session.currentAccount;
     res.locals.currentBalance = req.session.currentBalance;
+
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 })
+
+
+
 
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
