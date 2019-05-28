@@ -21,6 +21,8 @@ router.get("/show/search/account", function (req, res) {
 })
 
 router.post("/show/search/account", function (req, res) {
+    var accountID = req.body.searchAccountID;
+    var PersonalID = req.body.searchPersonalID;
     var Account_type = req.body.Account_type;
     var Broker_Symbol = req.body.searchBroker;
     if (Account_type && Broker_Symbol) {
@@ -29,6 +31,10 @@ router.post("/show/search/account", function (req, res) {
         var findAccount = "SELECT * FROM trader_account WHERE Account_type = '" + Account_type + "'";
     } else if (!Account_type && Broker_Symbol) {
         var findAccount = "SELECT * FROM trader_account WHERE Broker_Symbol = '" + Broker_Symbol + "'";
+    } else if (PersonalID) {
+        var findAccount = "SELECT * FROM trader_account WHERE Trader_Personal_ID = '" + PersonalID + "'";
+    } else if (accountID) {
+        var findAccount = "SELECT * FROM trader_account WHERE Account_ID = '" + accountID + "'";
     } else {
         var notFound = -1;
     }
@@ -68,11 +74,11 @@ router.get("/show/insert/account", function (req, res) {
     });
 })
 
-router.post("/show/insert/test", function (req, res) {
-    var test = req.body.name;
-    console.log(test);
-    res.redirect("/admin/show/insert/account");
-})
+// router.post("/show/insert/test", function (req, res) {
+//     var test = req.body.name;
+//     console.log(test);
+//     res.redirect("/admin/show/insert/account");
+// })
 
 router.post("/show/insert/account", function (req, res) {
     var PINArr = req.body.PIN;

@@ -17,9 +17,50 @@ router.get("/show/account1", function (req, res) {
 
 })
 
+router.get("/show/member1", function (req, res) {
+    var page = "member";
+    req.session.page = page;
+    res.redirect('/admin/show/member');
+})
+
+router.get("/show/stock1", function (req, res) {
+    var page = "stock";
+    req.session.page = page;
+    res.redirect('/admin/show/stock');
+})
+
+router.get("/show/market1", function (req, res) {
+    res.redirect('/admin');
+})
+
+router.get("/show/order1", function (req, res) {
+    res.redirect('/admin');
+})
+
+router.get("/show/Transaction1", function (req, res) {
+    res.redirect('/admin');
+})
+
+router.get("/show/bank1", function (req, res) {
+    res.redirect('/admin');
+})
+
+router.get("/show/broker1", function (req, res) {
+    var page = "broker";
+    req.session.page = page;
+    res.redirect('/admin/show/broker');
+})
+
+router.get("/show/company1", function (req, res) {
+    res.redirect('/admin');
+})
+
+
+
+
 router.get("/index", function (req, res) {
-    var findOrder = "SELECT * FROM stock_order"
-    var findTransaction = "SELECT * FROM transaction"
+    var findOrder = "SELECT * FROM stock_order ORDER BY Order_Time DESC"
+    var findTransaction = "SELECT * FROM transaction ORDER BY Transaction_Timestamp DESC"
     connection.query(findTransaction, function (err, foundTransaction) {
         if (err) {
             throw err;
@@ -36,17 +77,7 @@ router.get("/index", function (req, res) {
     });
 })
 
-router.get("/show/member", function (req, res) {
-    var findMember = "SELECT * FROM trader_data"
-    connection.query(findMember, function (err, foundMember) {
-        if (err) {
-            throw err;
-        }
-        res.render("admin/show/member", {
-            members: foundMember
-        });
-    });
-})
+
 
 router.get("/show/transaction", function (req, res) {
     var findTransaction = "SELECT * FROM transaction"

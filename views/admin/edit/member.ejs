@@ -1,0 +1,66 @@
+<% include ../../partials/adminHead %>
+<br>
+<H1>Edit Personal ID : <%=traders.Trader_Personal_ID%> </H1>
+<hr>
+<div class="container">
+    <br>
+    <br>
+    <form class="register-box" action="/admin/member/update/<%=traders.Trader_Personal_ID%>?_method=PUT" method="POST">
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Username</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" value="<%=traders.Username%>" name="Username">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Password</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" value="<%=traders.Password%>" name="Password">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">First name</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" value="<%=traders.Trader_Fname%>" name="Trader_Fname">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Last name</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" value="<%=traders.Trader_Lname%>" name="Trader_Lname">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Age</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" value="<%=traders.Trader_Age%>" name="Trader_Age">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Address</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" value="<%=traders.Trader_Address%>" name="Trader_Address">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Email</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" value="<%=traders.Trader_Email%>" name="Trader_Email">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Phone</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" value="<%=traders.Trader_Phone%>" name="Trader_Phone">
+            </div>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Edit</button>
+    </form>
+    <div>
+
+
+        <script>
+
+        </script>
+        <% include ../../partials/adminFoot %>

@@ -45,3 +45,5 @@ $(document).ready(function () {
         $(this).parents(".fieldGroup").remove();
     });
 });
+
+

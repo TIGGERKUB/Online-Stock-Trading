@@ -17,14 +17,12 @@
 
 
 <!-- content -->
-<% if(!stock){ %>
-
-<% }else{ %>
+<% if(stock){ %>
 <div class="container">
 
 	<div class="row">
 		<div class="card mx-2 col">
-			<p>Graph</p>
+				<canvas id="line-Stock"  width="30%" height="15%"></canvas>
 		</div>
 		<div class="card mx-2 py-2 px-4 col">
 			<h1 class="col" id="stock-symbol">
@@ -32,36 +30,41 @@
 			</h1>
 			<div class="row mt-2">
 				<p class="col">
-					high Price: <span class="" id="stock-percent" style="color: red;">-0.52%</span>
+					high Price:<span class="text-success" id="stock-percent" ><%=stock.high_price%></span>
 				</p>
 				<p class="col">
-					Last Price: <span class="" id="stock-last" style="color: red;"><%=stock.Stock_last%></span>
-				</p>
-
-			</div>
-			<div class="row">
-				<p class="col">
-					Low Price: <span class="" id="stock-change" style="color: red;">-0.25</span>
-				</p>
-				<p class="col">
-					Change: <span class="" id="stock-change" style="color: red;">-0.25</span>
+					Last Price: <span class="" id="stock-last" ><%=stock.last_price%></span>
 				</p>
 
 			</div>
 			<div class="row">
 				<p class="col">
-					Ceiling Price: <span class="" id="stock-percent" style="color: red;">-0.52%</span>
+					Low Price:<span class="text-danger" id="stock-change" ><%=stock.low_price%></span>
 				</p>
 				<p class="col">
-					Stock Value: <span class="" id="stock-percent" style="color: red;">-0.52%</span>
+					Change:
+					<% if(stock.price_change >= 0){ %>
+						<span class="text-success" id="stock-change" ><%=stock.price_change%></span>
+					<% }else{%>
+						<span class="text-danger" id="stock-change" ><%=stock.price_change%></span>
+					<% } %>
+				</p>
+
+			</div>
+			<div class="row">
+				<p class="col">
+					Ceiling Price: <span class="text-success" id="stock-percent" ><%=stock.ceil_price%></span>
+				</p>
+				<p class="col">
+					Stock Value: <span class="" id="stock-percent" ><%=stock.stock_value%></span>
 				</p>
 			</div>
 			<div class="row">
 				<p class="col">
-					Floor Price: <span class="" id="stock-change" style="color: red;">-0.25</span>
+					Floor Price: <span class="text-danger" id="stock-change" ><%=stock.floor_price%></span>
 				</p>
 				<p class="col-6">
-					Stock Volume: <span class="" id="stock-change" style="color: red;">-0.25</span>
+					Stock Volume: <span class="" id="stock-change" ><%=stock.stock_volume%></span>
 				</p>
 			</div>
 		</div>
@@ -139,6 +142,30 @@
 	</table>
 </div>
 
+<script>
+
+new Chart(document.getElementById("line-Stock"), {
+  type: 'line',
+  data: {
+    labels: [<%=day%>],
+    datasets: [{
+        data: [<%=price%>],
+        label: "<%=stock.Stock_Symbol%>",
+        borderColor: "#c45850",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: '<%=stock.Stock_Symbol%>'
+    }
+  }
+});
+
+
+</script>
 
 <% } %>
 

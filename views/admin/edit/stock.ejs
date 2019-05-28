@@ -1,0 +1,42 @@
+<% include ../../partials/adminHead %>
+<br>
+<H1>Edit Stock Symbol : <%=stocks.Stock_Symbol%> </H1>
+<hr>
+<div class="container">
+    <br>
+    <br>
+    <form class="register-box" action="/admin/stock/update/<%=stocks.Stock_Symbol%>?_method=PUT" method="POST">
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Stock_Symbol</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" value="<%=stocks.Stock_Symbol%>" name="Stock_Symbol">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form label">Stock_Volume</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" value="<%=stocks.Stock_Volume%>" name="Stock_Volume">
+            </div>
+        </div>
+        <div class="form-group row">
+                <label class="col-sm-4 col-form label">Market_Type</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" value="<%=stocks.Market_Type%>" name="Market_Type">
+                </div>
+            </div>
+            <div class="form-group row">
+                    <label class="col-sm-4 col-form label">Company_Name</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" value="<%=stocks.Company_Name%>" name="Company_Name">
+                    </div>
+                </div>
+        <button class="btn btn-primary btn-block" type="submit">Edit</button>
+    </form>
+    <div>
+
+
+        <script>
+
+        </script>
+        <% include ../../partials/adminFoot %>

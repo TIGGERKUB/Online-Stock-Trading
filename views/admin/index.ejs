@@ -57,19 +57,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% for(var i = orders.length-1 ;orders.length-5 < i; i--) { %>
-                    <tr>
-                        <td><%=orders[i].Order_Time.toDateString()%></td>
-                        <td><%=orders[i].Order_Status%></td>
-                        <td><%=orders[i].Order_Price%></td>
-                        <% if (orders[i].Order_Type === 'Buy') { %>
-                        <td class="text-success"><%=orders[i].Order_Type%></td>
-                        <% } else { %>
-                        <td class="text-danger"><%=orders[i].Order_Type%></td>
+                    <% if (orders.length<=5) { %>
+                        <% for(var i=0;i< orders.length;i++) { %>
+                        <tr>
+                            <td><%=orders[i].Order_Time.toDateString()%></td>
+                            <td><%=orders[i].Order_Status%></td>
+                            <td><%=orders[i].Order_Price%></td>
+                            <% if (orders[i].Order_Type === 'Buy') { %>
+                            <td class="text-success"><%=orders[i].Order_Type%></td>
+                            <% } else { %>
+                            <td class="text-danger"><%=orders[i].Order_Type%></td>
+                            <% } %>
+                            <td><%=orders[i].Order_Volume%></td>
+                            <td><%=orders[i].Stock_Symbol%></td>
+                        </tr>
                         <% } %>
-                        <td><%=orders[i].Order_Volume%></td>
-                        <td><%=orders[i].Stock_Symbol%></td>
-                    </tr>
+                    <% } else { %>
+                        <% for(var i=0;i<5;i++) { %>
+                                <tr>
+                                    <td><%=orders[i].Order_Time.toDateString()%></td>
+                                    <td><%=orders[i].Order_Status%></td>
+                                    <td><%=orders[i].Order_Price%></td>
+                                    <% if (orders[i].Order_Type === 'Buy') { %>
+                                    <td class="text-success"><%=orders[i].Order_Type%></td>
+                                    <% } else { %>
+                                    <td class="text-danger"><%=orders[i].Order_Type%></td>
+                                    <% } %>
+                                    <td><%=orders[i].Order_Volume%></td>
+                                    <td><%=orders[i].Stock_Symbol%></td>
+                                </tr>
+                                <% } %>
                     <% } %>
                 </tbody>
             </table>
@@ -81,14 +98,15 @@
             <table class="table table-dark">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">DD/MM/YYYY</th>
+                        <th scope="col">TIME</th>
                         <th scope="col">Type</th>
                         <th scope="col">Amount</th>
                         <th scope="col">Account ID</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% for(var i = transactions.length-1 ;transactions.length-5 < i; i--) { %>
+                <% if (orders.length<=5) { %>
+                    <% for(var i=0;i< transactions.length;i++) { %>
                     <tr>
                         <td><%=transactions[i].Transaction_Timestamp.toDateString()%></td>
                         <% if (transactions[i].Transaction_Type === 'Deposit') { %>
@@ -99,8 +117,21 @@
                         <td><%=transactions[i].Transaction_Amount%></td>
                         <td><%=transactions[i].Account_ID%></td>
                     </tr>
-
                     <% } %>
+                <% } else { %>
+                    <% for(var i=0;i< 5;i++) { %>
+                        <tr>
+                            <td><%=transactions[i].Transaction_Timestamp.toDateString()%></td>
+                            <% if (transactions[i].Transaction_Type === 'Deposit') { %>
+                            <td class="text-success"><%=transactions[i].Transaction_Type%></td>
+                            <% } else { %>
+                            <td class="text-danger"><%=transactions[i].Transaction_Type%></td>
+                            <% } %>
+                            <td><%=transactions[i].Transaction_Amount%></td>
+                            <td><%=transactions[i].Account_ID%></td>
+                        </tr>
+                        <% } %>
+                <% } %>
                 </tbody>
             </table>
         </div>
@@ -108,46 +139,50 @@
 
 </div>
 
-<script>
-    // Bar chart
-    new Chart(document.getElementById("bar-chart"), {
-        type: 'bar',
-        data: {
-            labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
-            datasets: [{
-                label: "Population (millions)",
-                backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                data: [2478, 5267, 734, 784, 433]
-            }]
-        },
-        options: {
-            legend: {
-                display: false
-            },
-            title: {
-                display: true,
-                text: 'Predicted world population (millions) in 2050'
-            }
-        }
-    });
 
-    new Chart(document.getElementById("doughnut-chart"), {
-        type: 'doughnut',
-        data: {
-            labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
-            datasets: [{
-                label: "Population (millions)",
-                backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                data: [2478, 5267, 734, 784, 433]
-            }]
+
+<script>
+
+// Bar chart
+new Chart(document.getElementById("bar-chart"), {
+    type: 'bar',
+    data: {
+        labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+        datasets: [{
+            label: "Population (millions)",
+            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+            data: [2478, 5267, 734, 784, 433]
+        }]
+    },
+    options: {
+        legend: {
+            display: false
         },
-        options: {
-            title: {
-                display: true,
-                text: 'Predicted world population (millions) in 2050'
-            }
+        title: {
+            display: true,
+            text: 'Predicted world population (millions) in 2050'
         }
-    });
+    }
+});
+
+new Chart(document.getElementById("doughnut-chart"), {
+    type: 'doughnut',
+    data: {
+        labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+        datasets: [{
+            label: "Population (millions)",
+            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+            data: [2478, 5267, 734, 784, 433]
+        }]
+    },
+    options: {
+        title: {
+            display: true,
+            text: 'Predicted world population (millions) in 2050'
+        }
+    }
+});
+
 </script>
 
 <% include ../partials/adminFoot %>

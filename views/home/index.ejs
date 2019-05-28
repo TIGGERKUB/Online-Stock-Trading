@@ -6,14 +6,14 @@
 	<div class="col col-sm col-md col-lg col-xl" id="setGraph">
 		<div class="card" id="graph-1">
 			<div class="card-body text-center">
-				SET graph
+					<canvas id="line-SET"  width="100" height="50"></canvas>
 			</div>
 		</div>
 	</div>
 	<div class="col col-sm col-md col-lg col-xl">
 		<div class="card ml-5" id="graph-2">
 			<div class="card-body text-center">
-				mai graph
+				<canvas id="line-MAI"  width="100" height="50"></canvas>
 			</div>
 		</div>
 	</div>
@@ -32,32 +32,21 @@
 			</tr>
 		</thead>
 		<tbody>
+			<% markets.forEach(function(market){ %>
 			<tr>
-				<td scope="row"><%= market_mai.Market_Type%></td>
-				<td><%=market_mai.last_price%></td>
-				<% if(market_mai.price_chage > 0){ %>
-				<td class="text-success"><%=market_mai.price_chage%></td>
-				<% }else if(market_mai.price_chage < 0){ %>
-				<td class="text-danger"><%=market_mai.price_chage%></td>
+				<td scope="row"><%= market.Market_Type%></td>
+				<td><%=market.last_price%></td>
+				<% if(market.price_chage > 0){ %>
+				<td class="text-success"><%=market.price_chage%></td>
+				<% }else if(market.price_chage < 0){ %>
+				<td class="text-danger"><%=market.price_chage%></td>
 				<% }else{ %>
-				<td><%=market_mai.price_chage%></td>
+				<td><%=market.price_chage%></td>
 				<% } %>
-				<td><%=market_mai.stock_volume%></td>
-				<td><%=market_mai.market_value%></td>
+				<td><%=market.stock_volume%></td>
+				<td><%=market.market_value%></td>
 			</tr>
-			<tr>
-				<td scope="row"><%= market_SET.Market_Type%></td>
-				<td><%=market_SET.last_price%></td>
-				<% if(market_SET.price_chage > 0){ %>
-					<td class="text-success"><%=market_SET.price_chage%></td>
-					<% }else if(market_SET.price_chage < 0){ %>
-					<td class="text-danger"><%=market_SET.price_chage%></td>
-					<% }else{ %>
-					<td><%=market_SET.price_chage%></td>
-					<% } %>
-				<td><%=market_SET.stock_volume%></td>
-				<td><%=market_SET.market_value%></td>
-			</tr>
+			<% }); %>
 		</tbody>
 	</table>
 </div>
@@ -67,23 +56,46 @@
 	<div class="card">
 		<div class="card-body">
 			<div class="card-title">
+
 				<div class="container">
 					<div class="row justify-content start">
-						<div class="col-2">
-							<select class="custom-select">
-								<option value="set">SET</option>
-								<option value="mai">mai</option>
-							</select>
+
+						<div class="col-2 dropdown">
+							<a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<%= currentMarket %>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+								<a class="dropdown-item" href="/index/SET/<%= currentTop %>">SET</a>
+								<a class="dropdown-item" href="/index/mai/<%= currentTop %>">mai</a>
+							</div>
 						</div>
-						<div class="col-4">
+
+						<div class="col-4 dropdown">
+							<a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<%= currentTopShow %>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+								<a class="dropdown-item" href="/index/<%= currentMarket %>/gainer">Top 10 gainer</a>
+								<a class="dropdown-item" href="/index/<%= currentMarket %>/top_volume">Top 20 stocks
+									volume trading</a>
+								<a class="dropdown-item" href="/index/<%= currentMarket %>/top_value">Top 20 stocks
+									value trading</a>
+							</div>
+						</div>
+
+						<!--						<div class="col-4">
 							<select class="custom-select">
-								<option value="top-gainer">Top 10 gainer</option>
-								<option value="top-volume">Top 20 stocks volume trading</option>
+								<option value="top-gainer" href="#">Top 10 gainer</option>
+								<option value="top-volume" href="#">Top 20 stocks volume trading</option>
 								<option value="top-value">Top 20 stocks value trading</option>
 							</select>
 						</div>
+					-->
 					</div>
 				</div>
+
 			</div>
 			<div class="card-body">
 				<table class="table table-bordered table-striped">
@@ -97,21 +109,76 @@
 						</tr>
 					</thead>
 					<tbody>
-						<% topGainers.forEach(function(topGainer){ %>
-						<tr>
-							<td scope="row"><%=topGainer.Stock_Symbol%></td>
-							<td><%=topGainer.last_price%></td>
-							<td><%=topGainer.stock_value%></td>
-							<td><%=topGainer.stock_volume %></td>
-							<% if(topGainer.price_change > 0){ %>
-								<td class="text-success"><%=topGainer.price_change%></td>
-								<% }else if(topGainer.price_change < 0){ %>
-								<td class="text-danger"><%=topGainer.price_change%></td>
-								<% }else{ %>
-								<td><%=topGainer.price_change%></td>
+						<% if (currentTop == 'gainer') { %>
+							<% if (tops.length >= 10) { %>
+								<% for(var i = 0;i<10; i++) { %>
+								<tr>
+									<td scope="row"><%=tops[i].Stock_Symbol%></td>
+									<td><%=tops[i].last_price%></td>
+									<td><%=tops[i].stock_value%></td>
+									<td><%=tops[i].stock_volume %></td>
+									<% if(tops[i].price_change > 0){ %>
+									<td class="text-success"><%=tops[i].price_change%></td>
+									<% }else if(tops[i].price_change < 0){ %>
+									<td class="text-danger"><%=tops[i].price_change%></td>
+									<% }else{ %>
+									<td><%=tops[i].price_change%></td>
+									<% } %>
+								</tr>
+							<% } %>
+							<% }else{ %>
+								<% for(var i = 0;i<tops.length; i++) { %>
+								<tr>
+									<td scope="row"><%=tops[i].Stock_Symbol%></td>
+									<td><%=tops[i].last_price%></td>
+									<td><%=tops[i].stock_value%></td>
+									<td><%=tops[i].stock_volume %></td>
+									<% if(tops[i].price_change > 0){ %>
+									<td class="text-success"><%=tops[i].price_change%></td>
+									<% }else if(tops[i].price_change < 0){ %>
+									<td class="text-danger"><%=tops[i].price_change%></td>
+									<% }else{ %>
+									<td><%=tops[i].price_change%></td>
+									<% } %>
+								</tr>
 								<% } %>
-						</tr>
-						<% }); %>
+							<% } %>
+						<% }else{ %>
+							<% if (tops.length >= 20) { %>
+								<% for(var i = 0;i<10; i++) { %>
+								<tr>
+									<td scope="row"><%=tops[i].Stock_Symbol%></td>
+									<td><%=tops[i].last_price%></td>
+									<td><%=tops[i].stock_value%></td>
+									<td><%=tops[i].stock_volume %></td>
+									<% if(tops[i].price_change > 0){ %>
+									<td class="text-success"><%=tops[i].price_change%></td>
+									<% }else if(tops[i].price_change < 0){ %>
+									<td class="text-danger"><%=tops[i].price_change%></td>
+									<% }else{ %>
+									<td><%=tops[i].price_change%></td>
+									<% } %>
+								</tr>
+							<% } %>
+							<% }else{ %>
+								<% for(var i = 0;i<tops.length; i++) { %>
+								<tr>
+									<td scope="row"><%=tops[i].Stock_Symbol%></td>
+									<td><%=tops[i].last_price%></td>
+									<td><%=tops[i].stock_value%></td>
+									<td><%=tops[i].stock_volume %></td>
+									<% if(tops[i].price_change > 0){ %>
+									<td class="text-success"><%=tops[i].price_change%></td>
+									<% }else if(tops[i].price_change < 0){ %>
+									<td class="text-danger"><%=tops[i].price_change%></td>
+									<% }else{ %>
+									<td><%=tops[i].price_change%></td>
+									<% } %>
+								</tr>
+								<% } %>
+							<% } %>
+
+						<% } %>
 					</tbody>
 				</table>
 			</div>
@@ -119,5 +186,49 @@
 	</div>
 </div>
 
+
+<script>
+
+new Chart(document.getElementById("line-SET"), {
+  type: 'line',
+  data: {
+    labels: [<%=daySET%>],
+    datasets: [{
+        data: [<%=priceSET%>],
+        label: "SET",
+        borderColor: "#c45850",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'SET-MARKET'
+    }
+  }
+});
+
+  new Chart(document.getElementById("line-MAI"), {
+  type: 'line',
+  data: {
+    labels: [<%=dayMAI%>],
+    datasets: [{ 
+        data: [<%=priceMAI%>],
+        label: "mai",
+        borderColor: "#3e95cd",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'mai-MARKET'
+    }
+  }
+});
+
+</script>
 
 <% include ../partials/footer %>

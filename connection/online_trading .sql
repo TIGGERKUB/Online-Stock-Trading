@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2019 at 06:48 PM
+-- Generation Time: May 28, 2019 at 06:54 AM
 -- Server version: 10.1.40-MariaDB
 -- PHP Version: 7.3.5
 
@@ -87,9 +87,9 @@ CREATE TABLE `broker` (
 
 INSERT INTO `broker` (`Broker_Symbol`, `Broker_Name`, `Broker_Address`, `Broker_Email`, `Broker_Phone`, `Broker_Commission`) VALUES
 ('AEC', 'aaaaaaaaaaaaaa', 'aaaaaaaaaaaa', 'aaaaaaaaa', '11', 212.12),
-('AIRA', 'บริษัทหลักทรัพย์ ไอร่า จำกัด (', 'asdcasd', 'asas', '3243', 23),
+('AIRA', 'บริษัทหลักทรัพย์ ไอร่า จำกัด ', 'asdcasd', 'asas', '3243', 23),
 ('ASL', 'บริษัทหลักทรัพย์ เอเอสแอล จำกั', 'asdad', '12', '12', 12),
-('KSS', 'asd', '221', 'qweq', '213', 12),
+('KSS', 'hhhhhhhhhhh', '221', 'qweq', '213', 12),
 ('MBKET', 'nnn', '22', '21', '21', 12);
 
 -- --------------------------------------------------------
@@ -165,6 +165,21 @@ CREATE TABLE `cur_mar_price` (
 `stock_date` date
 ,`Market_Type` varchar(6)
 ,`last_price` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `last_price_market`
+-- (See below for the actual view)
+--
+CREATE TABLE `last_price_market` (
+`MaxDate` date
+,`Market_Type` varchar(6)
+,`last_price` double
+,`price_chage` double
+,`market_value` double
+,`stock_volume` decimal(54,0)
 );
 
 -- --------------------------------------------------------
@@ -279,7 +294,6 @@ INSERT INTO `match_order` (`Order_No`, `Match_No`) VALUES
 (1096825, 19),
 (1096826, 20),
 (1096828, 20),
-(1096829, 21),
 (1096830, 21),
 (1096831, 22),
 (1096832, 22),
@@ -299,6 +313,28 @@ INSERT INTO `match_order` (`Order_No`, `Match_No`) VALUES
 (1096869, 32),
 (1096875, 33),
 (1096876, 33);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `maxdate_market`
+-- (See below for the actual view)
+--
+CREATE TABLE `maxdate_market` (
+`MaxDate` date
+,`Market_Type` varchar(6)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `maxdate_stock`
+-- (See below for the actual view)
+--
+CREATE TABLE `maxdate_stock` (
+`MaxDate` date
+,`Stock_Symbol` varchar(6)
+);
 
 -- --------------------------------------------------------
 
@@ -377,59 +413,55 @@ CREATE TABLE `stock_order` (
 --
 
 INSERT INTO `stock_order` (`Order_No`, `Order_Time`, `Order_Status`, `Order_Price`, `Order_Type`, `Order_Volume`, `Stock_Symbol`, `Account_ID`) VALUES
-(116975, '2019-05-22 09:30:08.864039', 'C', 55, 'Sell', 100, 'AIS', 379793),
-(280311, '2019-05-01 19:05:38.078299', 'C', 123, 'Buy', 123, 'FUCK', 417438),
+(280311, '2019-05-01 19:05:38.078299', 'C', 123, 'Buy', 123, 'CP', 417438),
 (286134, '2019-05-12 15:23:47.028485', 'C', 3434, 'Buy', 123, 'AIS', 417438),
 (305360, '2019-05-22 11:34:09.039991', 'C', 40, 'Buy', 100, 'AIS', 317828),
 (341451, '2019-05-02 08:51:55.652202', 'C', 100, 'Buy', 2000, 'AIS', 427540),
 (406028, '2019-05-23 21:36:19.810983', 'C', 467, 'Buy', 100, 'AIS', 317828),
-(415833, '2019-05-22 09:30:28.590707', 'C', 45, 'Sell', 100, 'AIS', 379793),
-(464316, '2019-05-22 11:34:28.355931', 'C', 40, 'Sell', 100, 'AIS', 379793),
 (510144, '2019-05-01 18:35:03.532743', 'C', 122, 'Sell', 31, 'AIS', 417438),
 (520679, '2019-05-12 15:23:12.857586', 'C', 122, 'Buy', 12, 'AIS', 317828),
-(625162, '2019-05-11 10:45:50.869695', 'C', 232, 'Buy', 2321, 'FUCK', 317828),
+(625162, '2019-05-11 10:45:50.869695', 'C', 232, 'Buy', 2321, 'CP', 317828),
 (680443, '2019-05-01 18:43:34.319504', 'C', 123, 'Sell', 22, 'TRUE', 417438),
 (1096815, '2019-05-23 21:36:35.965870', 'M', 501, 'Buy', 200, 'AIS', 317828),
 (1096816, '2019-05-23 12:48:09.660483', 'C', 40, 'Sell', 45, 'TRUE', 611397),
 (1096817, '2019-05-23 12:48:33.936151', 'C', 12, 'Sell', 12, 'AIS', 611397),
 (1096818, '2019-05-23 17:20:42.064803', 'M', 500, 'Buy', 500, 'AIS', 317828),
 (1096819, '2019-05-23 17:20:42.064803', 'M', 500, 'Sell', 500, 'AIS', 580429),
-(1096820, '2019-05-23 17:21:14.842381', 'M', 20, 'Sell', 20, 'FUCK', 580429),
-(1096821, '2019-05-23 17:21:14.842381', 'M', 20, 'Buy', 20, 'FUCK', 611392),
+(1096820, '2019-05-23 17:21:14.842381', 'M', 20, 'Sell', 20, 'CP', 580429),
+(1096821, '2019-05-23 17:21:14.842381', 'M', 20, 'Buy', 20, 'CP', 611392),
 (1096822, '2019-05-24 18:42:48.533423', 'M', 501, 'Sell', 300, 'AIS', 317828),
-(1096823, '2019-05-24 10:09:26.000000', 'M', 22, 'Sell', 123, 'FUCK', 438042),
-(1096824, '2019-05-24 18:52:02.304949', 'M', 42, 'Sell', 200, 'FUCK', 317828),
-(1096825, '2019-05-24 18:52:02.304949', 'M', 42, 'Buy', 200, 'FUCK', 611397),
-(1096826, '2019-05-24 18:55:06.994126', 'M', 41, 'Sell', 100, 'FUCK', 317828),
-(1096828, '2019-05-24 18:55:06.994126', 'M', 41, 'Buy', 100, 'FUCK', 611388),
-(1096829, '2019-05-24 20:59:44.618468', 'M', 12, 'Sell', 12, 'FUCK', 379793),
-(1096830, '2019-05-24 20:59:44.618468', 'M', 12, 'Buy', 12, 'FUCK', 417438),
+(1096823, '2019-05-24 10:09:26.000000', 'M', 22, 'Sell', 123, 'CP', 438042),
+(1096824, '2019-05-24 18:52:02.304949', 'M', 42, 'Sell', 200, 'CP', 317828),
+(1096825, '2019-05-24 18:52:02.304949', 'M', 42, 'Buy', 200, 'CP', 611397),
+(1096826, '2019-05-24 18:55:06.994126', 'M', 41, 'Sell', 100, 'CP', 317828),
+(1096828, '2019-05-24 18:55:06.994126', 'M', 41, 'Buy', 100, 'CP', 611388),
+(1096830, '2019-05-24 20:59:44.618468', 'M', 12, 'Buy', 12, 'CP', 417438),
 (1096831, '2019-05-24 21:01:52.749124', 'M', 123, 'Buy', 123, 'AIS', 317828),
 (1096832, '2019-05-24 21:01:52.749124', 'M', 123, 'Sell', 123, 'AIS', 580429),
 (1096833, '2019-05-25 18:16:39.704909', 'M', 21, 'Sell', 20, 'CHEWA', 317828),
 (1096834, '2019-05-25 18:16:39.704909', 'M', 21, 'Buy', 20, 'CHEWA', 317828),
 (1096835, '2019-05-25 18:21:53.562879', 'M', 2, 'Sell', 23, 'ABICO', 317828),
 (1096836, '2019-05-25 18:21:53.562879', 'M', 2, 'Buy', 23, 'ABICO', 580429),
-(1096837, '2019-05-25 18:35:00.800654', 'M', 501, 'Sell', 500, 'FUCK', 611397),
-(1096838, '2019-05-25 18:35:00.800654', 'M', 501, 'Buy', 500, 'FUCK', 611397),
+(1096837, '2019-05-25 18:35:00.800654', 'M', 501, 'Sell', 500, 'CP', 611397),
+(1096838, '2019-05-25 18:35:00.800654', 'M', 501, 'Buy', 500, 'CP', 611397),
 (1096839, '2019-05-26 09:20:18.737847', 'M', 15, 'Sell', 30, 'ABICO', 611397),
 (1096840, '2019-05-26 09:20:18.737847', 'M', 15, 'Buy', 30, 'ABICO', 611397),
 (1096848, '2019-05-26 09:50:58.433753', 'M', 100, 'Sell', 100, 'AIS', 611398),
 (1096849, '2019-05-26 09:50:58.433753', 'M', 100, 'Buy', 100, 'AIS', 611398),
-(1096850, '2019-05-26 09:55:37.473674', 'M', 101, 'Sell', 123, 'FUCK', 611398),
-(1096851, '2019-05-26 10:54:31.845932', 'C', 120, 'Buy', 123, 'FUCK', 611398),
-(1096852, '2019-05-26 10:57:16.137922', 'C', 123, 'Buy', 123, 'FUCK', 611398),
-(1096853, '2019-05-26 09:55:37.473674', 'M', 101, 'Buy', 123, 'FUCK', 611398),
+(1096850, '2019-05-26 09:55:37.473674', 'M', 101, 'Sell', 123, 'CP', 611398),
+(1096851, '2019-05-26 10:54:31.845932', 'C', 120, 'Buy', 123, 'CP', 611398),
+(1096852, '2019-05-26 10:57:16.137922', 'C', 123, 'Buy', 123, 'CP', 611398),
+(1096853, '2019-05-26 09:55:37.473674', 'M', 101, 'Buy', 123, 'CP', 611398),
 (1096860, '2019-05-26 11:14:06.329320', 'C', 123, 'Buy', 123, 'AIS', 611398),
 (1096861, '2019-05-26 11:16:30.957276', 'C', 21, 'Buy', 123, 'AIS', 611398),
 (1096862, '2019-05-26 11:19:33.685535', 'C', 213, 'Sell', 123, 'AIS', 611398),
 (1096863, '2019-05-26 11:47:27.034803', 'C', 213, 'Buy', 213, 'AIS', 611398),
 (1096864, '2019-05-27 03:27:53.900189', 'C', 123, 'Sell', 213, 'AIS', 317828),
-(1096866, '2019-05-27 03:33:40.033798', 'C', 123, 'Buy', 123, 'FUCK', 611392),
-(1096868, '2019-05-27 03:45:35.829123', 'C', 66, 'Buy', 656, 'FUCK', 317828),
+(1096866, '2019-05-27 03:33:40.033798', 'C', 123, 'Buy', 123, 'CP', 611392),
+(1096868, '2019-05-27 03:45:35.829123', 'C', 66, 'Buy', 656, 'CP', 317828),
 (1096869, '2019-05-27 03:46:59.749764', 'M', 123, 'Buy', 2131, 'CHEWA', 317828),
-(1096870, '2019-05-27 03:48:20.930788', 'Q', 12222200, 'Sell', 21323, 'ABICO', 317828),
-(1096871, '2019-05-27 03:48:25.389975', 'Q', 12222200, 'Sell', 21323, 'ABICO', 317828),
+(1096870, '2019-05-27 03:48:20.930788', 'C', 12222200, 'Sell', 21323, 'ABICO', 317828),
+(1096871, '2019-05-27 03:48:25.389975', 'C', 12222200, 'Sell', 21323, 'ABICO', 317828),
 (1096875, '2019-05-27 10:20:42.522835', 'M', 123, 'Sell', 123, 'AIS', 611392),
 (1096876, '2019-05-27 10:20:54.358761', 'M', 123, 'Buy', 123, 'AIS', 611392),
 (1096879, '2019-05-27 16:29:40.347579', 'C', 45, 'Sell', 45, 'AIS', 611392);
@@ -455,7 +487,7 @@ INSERT INTO `stock_symbol` (`Stock_Symbol`, `Stock_Volume`, `Market_Type`, `Comp
 ('ABICO', 4000, 'mai', 'ROOM429'),
 ('AIS', 21, 'SET', 'ROOM429'),
 ('CHEWA', 300, 'mai', 'ROOM429'),
-('FUCK', 43, 'SET', 'ROOM429'),
+('CP', 43, 'SET', 'ROOM429'),
 ('TRUE', 56, 'SET', 'ROOM429');
 
 -- --------------------------------------------------------
@@ -494,7 +526,6 @@ INSERT INTO `trader_account` (`Account_ID`, `PIN`, `Account_Balance`, `Account_T
 (226935, 111, 500000, 'Cash_Balance', '26262622', 'ASL'),
 (268406, 554, 51677, 'Cash_Balance', '12545', 'AIRA'),
 (317828, 561, 592199, 'Cash_Balance', '123456', 'AIRA'),
-(379793, 111, 0, 'Cash_Balance', '123456', 'KSS'),
 (381824, 222, 283.5, 'Cash_Balance', '26262622', 'MBKET'),
 (417438, 121, 5110, 'Credit_Balance', '123456', 'KSS'),
 (427540, 1234, 52222, 'Cash_Balance', '1104000012345', 'AEC'),
@@ -512,8 +543,7 @@ INSERT INTO `trader_account` (`Account_ID`, `PIN`, `Account_Balance`, `Account_T
 (611396, 232, 123, 'Cash_Balance', '12545', 'ASL'),
 (611397, 231, 0, 'Credit_Balance', '1445522', 'AIRA'),
 (611398, 123, 50000, 'Cash_Balance', '33232', 'AIRA'),
-(611404, 213, 0, 'Cash_Balance', '7777', 'AEC'),
-(611405, 123, 500000, 'Cash_Balance', '7777', 'AEC');
+(611406, 324, 234, 'Cash_Account', '555', 'AEC');
 
 -- --------------------------------------------------------
 
@@ -538,10 +568,10 @@ CREATE TABLE `trader_data` (
 --
 
 INSERT INTO `trader_data` (`Trader_Personal_ID`, `Username`, `Password`, `Trader_Fname`, `Trader_Lname`, `Trader_Age`, `Trader_Address`, `Trader_Email`, `Trader_Phone`) VALUES
-('1104000012345', 'testuser', 'password', 'testuser', 'testuser', 20, 'test address', 'test@mail.com', '081-111-11'),
-('123', 'sc', '222', '22', '222', 22, 'as', 'as_sippanon@hotmail.com', '213123'),
+('1104000012345', 'testuser', 'password', 'testuser', 'testuser', 20, 'test address', 'test@mail.com', '1045324324'),
+('123', 'zxczxc', '222', 'fsaefwefewfwef', '222', 22, 'as', 'as_sippanon@hotmail.com', '213123'),
 ('123456', 'p', 'p', 'p', 'p', 26, 'p', 'p@p.com', 'p'),
-('12545', 'n', 'n', 'n', 'nn', 77, 'as', 'nabnoteac131@hotmail.com', '213123'),
+('12545', 'n', 'n', 'n213', 'nn', 77, 'as', 'nabnoteac131@hotmail.com', '213123'),
 ('1445522', 'k', 'k', 'Sippanon', 'Utakruda', 20, 'as', 'as_sippanon@hotmail.com', '213123'),
 ('21111', 'l', 'l', '22', 'Utakruda', 1222, 'as', 'as_sippanon@hotmail.com', '0957728989'),
 ('213', 'mmm', 'mmm', 'mmm', 'mmm', 44, 'mm', 'music_rr_girl@hotmail.com', 'mmm'),
@@ -587,7 +617,6 @@ INSERT INTO `transaction` (`Transaction_ID`, `Transaction_Type`, `Transaction_Ti
 (1081287, 'Deposit', '2019-05-27 02:52:54.645753', 50000, 317828),
 (1081288, 'Withdraw', '2019-05-27 03:34:31.186302', 1321, 317828),
 (1081289, 'Deposit', '2019-05-27 16:00:36.199851', 500000, 317828),
-(1081290, 'Deposit', '2019-05-27 16:27:24.652351', 500000, 611405),
 (1081291, 'Withdraw', '2019-05-27 16:28:47.639936', 60000000, 580429);
 
 -- --------------------------------------------------------
@@ -638,11 +667,20 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Structure for view `last_price_market`
+--
+DROP TABLE IF EXISTS `last_price_market`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `last_price_market`  AS  select `m`.`MaxDate` AS `MaxDate`,`m`.`Market_Type` AS `Market_Type`,`d`.`last_price` AS `last_price`,`d`.`price_chage` AS `price_chage`,`d`.`market_value` AS `market_value`,`d`.`stock_volume` AS `stock_volume` from (`market_data` `d` join `maxdate_market` `m`) where ((`m`.`MaxDate` = `d`.`stock_date`) and (`m`.`Market_Type` = `d`.`Market_Type`)) ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `last_price_stock`
 --
 DROP TABLE IF EXISTS `last_price_stock`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `last_price_stock`  AS  select max(`stock_data`.`stock_date`) AS `MaxDate`,`stock_data`.`Stock_Symbol` AS `Stock_Symbol`,`stock_data`.`last_price` AS `last_price`,`stock_data`.`price_change` AS `price_change`,`stock_data`.`high_price` AS `high_price`,`stock_data`.`low_price` AS `low_price`,`stock_data`.`ceil_price` AS `ceil_price`,`stock_data`.`floor_price` AS `floor_price`,`stock_data`.`stock_value` AS `stock_value`,`stock_data`.`stock_volume` AS `stock_volume` from `stock_data` group by `stock_data`.`Stock_Symbol` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `last_price_stock`  AS  select `m`.`MaxDate` AS `MaxDate`,`m`.`Stock_Symbol` AS `Stock_Symbol`,`d`.`last_price` AS `last_price`,`d`.`price_change` AS `price_change`,`d`.`high_price` AS `high_price`,`d`.`low_price` AS `low_price`,`d`.`ceil_price` AS `ceil_price`,`d`.`floor_price` AS `floor_price`,`d`.`stock_value` AS `stock_value`,`d`.`stock_volume` AS `stock_volume` from (`stock_data` `d` join `maxdate_stock` `m`) where ((`m`.`MaxDate` = `d`.`stock_date`) and (`m`.`Stock_Symbol` = `d`.`Stock_Symbol`)) ;
 
 -- --------------------------------------------------------
 
@@ -661,6 +699,24 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `market_val_vol`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `market_val_vol`  AS  select `d`.`stock_date` AS `stock_date`,`s`.`Market_Type` AS `Market_Type`,`d`.`Stock_Symbol` AS `Stock_Symbol`,(`d`.`stock_value` * `d`.`stock_volume`) AS `stock_value`,`d`.`stock_volume` AS `stock_volume` from (`stock_data` `d` join `stock_symbol` `s`) where (`d`.`Stock_Symbol` = `s`.`Stock_Symbol`) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `maxdate_market`
+--
+DROP TABLE IF EXISTS `maxdate_market`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `maxdate_market`  AS  select max(`market_data`.`stock_date`) AS `MaxDate`,`market_data`.`Market_Type` AS `Market_Type` from `market_data` group by `market_data`.`Market_Type` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `maxdate_stock`
+--
+DROP TABLE IF EXISTS `maxdate_stock`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `maxdate_stock`  AS  select max(`stock_data`.`stock_date`) AS `MaxDate`,`stock_data`.`Stock_Symbol` AS `Stock_Symbol` from `stock_data` group by `stock_data`.`Stock_Symbol` ;
 
 -- --------------------------------------------------------
 
@@ -789,7 +845,7 @@ ALTER TABLE `stock_order`
 -- AUTO_INCREMENT for table `trader_account`
 --
 ALTER TABLE `trader_account`
-  MODIFY `Account_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=611406;
+  MODIFY `Account_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=611407;
 
 --
 -- AUTO_INCREMENT for table `transaction`

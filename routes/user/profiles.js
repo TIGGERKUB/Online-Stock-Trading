@@ -176,9 +176,29 @@ router.get("/history", function (req, res) {
 
 router.get("/portfolio", function (req, res) {
     var sql = "SELECT * FROM portfolio WHERE Account_ID = '" + req.session.currentAccount + "' "
-    connection.query(sql, function (err, portfolio) {
+    connection.query(sql, function (err, portfolios) {
         if (err) throw err;
-        res.render("profiles/portfolio",{portfolios:portfolio});
+        var Total = [0, 0, 0, 0];
+        var stock = [];
+        var volume = [];
+        for (var i = 0; i < portfolios.length; i++) {
+            Total[0] = Total[0] + portfolios[i].Amount_Price;
+            Total[1] = Total[1] + portfolios[i].Market_Value;
+            Total[2] = Total[2] + portfolios[i].Unreal;
+            Total[3] = Total[3] + portfolios[i].Per_Unreal;
+
+            stock[i] = portfolios[i].Stock_Symbol;
+            volume[i] = portfolios[i].volume;
+
+        }
+        console.log(stock);
+        console.log(volume);
+        res.render("profiles/portfolio", {
+            portfolios: portfolios,
+            Total: Total,
+            stock:stock,
+            volume:volume
+        });
     })
 })
 

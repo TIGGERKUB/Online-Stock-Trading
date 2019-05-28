@@ -16,6 +16,9 @@ var trade = require("./routes/user/trade");
 var auth = require("./routes/auth");
 var admin = require("./routes/admin/index");
 var adminAccount = require("./routes/admin/account");
+var adminMember = require("./routes/admin/member");
+var adminStock = require("./routes/admin/stock");
+var adminBroker = require("./routes/admin/broker");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine","ejs");
@@ -48,7 +51,9 @@ app.use("/profiles",profiles);
 app.use("/trade",trade);
 app.use("/admin",admin);
 app.use("/admin",adminAccount);
-
+app.use("/admin",adminMember);
+app.use("/admin",adminStock);
+app.use("/admin",adminBroker);
 
 var server=app.listen(3000,function(){
     console.log("We have started our server on port 3000");

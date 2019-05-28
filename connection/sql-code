@@ -110,3 +110,13 @@ as average_cost FROM stock_order AS o1 WHERE o1.Order_Status = 'M' GROUP BY o1.A
 CREATE VIEW lastPriceStock as SELECT MAX(stock_date) as MaxDate,Stock_Symbol,last_price,price_change,high_price,low_price,ceil_price,floor_price,stock_value,stock_volume FROM stock_data  GROUP BY Stock_Symbol
 
 CREATE VIEW portfolio as SELECT a.Account_ID,a.Stock_Symbol,a.volume,a.average_cost,l.last_price,(a.volume*a.average_cost) as Amount_Price,(l.last_price * a.volume) as Market_Value,((l.last_price * a.volume)-(a.volume*a.average_cost)) as Unreal,(((l.last_price * a.volume)-(a.volume*a.average_cost))/(a.volume*a.average_cost))*100 as Per_Unreal FROM last_price_stock l,agvcost a WHERE l.Stock_Symbol = a.Stock_Symbol AND a.volume >0 
+
+
+CREATE VIEW MaxDate_stock as SELECT MAX(stock_date) as MaxDate,Stock_Symbol FROM stock_data  GROUP BY Stock_Symbol
+
+
+//
+CREATE VIEW last_price_stock as SELECT m.MaxDate,m.Stock_Symbol,d.last_price,d.price_change,d.high_price,d.low_price,d.ceil_price,d.floor_price,d.stock_value,d.stock_volume FROM stock_data d,maxdate_stock m WHERE m.MaxDate = d.stock_date AND m.Stock_Symbol = d.Stock_Symbol
+
+
+CREATE VIEW MaxDate_market as SELECT MAX(stock_date) as MaxDate,Market_Type FROM market_data  GROUP BY Market_Type

@@ -1,0 +1,113 @@
+<% include ../../../partials/adminHead %>
+<br>
+<form method="post" action="/admin/show/insert/account">
+    <div class="form-group fieldGroup">
+        <div class="input-group">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Column</th>
+                        <th scope="col">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Trader_Personal_ID</td>
+                        <td><input class="form-control" style="width:50%" type="text" name="Trader_Personal_ID[]"></td>
+                    </tr>
+                    <tr>
+                        <td>Username</td>
+                        <td><input class="form-control" style="width:50%" type="text" name="Username[]"></td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td><input class="form-control" style="width:50%" type="text" name="Password[]"></td>
+                    </tr>
+                    <tr>
+                        <td>Trader_Fname</td>
+                        <td><input class="form-control" style="width:50%" type="text" name="Username[]"></td>
+                    </tr>
+                    <tr>
+                        <td>Trader_Lname</td>
+                        <td><input class="form-control" style="width:50%" type="text" name="Trader_Lname[]"></td>
+                    </tr>
+                    <tr>
+                        <td>Trader_Age</td>
+                        <td><input class="form-control" style="width:50%" type="number" name="Trader_Age[]"></td>
+                    </tr>
+                    <tr>
+                        <td>Trader_Address</td>
+                        <td><input class="form-control" style="width:50%" type="text" name="Trader_Address[]"></td>
+                    </tr>
+                    <tr>
+                        <td>Trader_Phone</td>
+                        <td><input class="form-control" style="width:50%" type="number" name="Trader_Phone[]"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="container-fluid input-group-addon text-center">
+                <a href="javascript:void(0)" class="btn btn-success addMore" style="width: 50%"><span
+                        class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Add More</a>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid text-center">
+        <input type="submit" name="submit" class="btn btn-primary" value="SUBMIT" />
+    </div>
+</form>
+
+<!-- copy of input fields group -->
+<div class="form-group fieldGroupCopy" style="display: none;">
+        <div class="input-group">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">Column</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Trader_Personal_ID</td>
+                            <td><input class="form-control" style="width:50%" type="text" name="Trader_Personal_ID[]"></td>
+                        </tr>
+                        <tr>
+                            <td>Username</td>
+                            <td><input class="form-control" style="width:50%" type="text" name="Username[]"></td>
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td><input class="form-control" style="width:50%" type="text" name="Password[]"></td>
+                        </tr>
+                        <tr>
+                            <td>Trader_Fname</td>
+                            <td><input class="form-control" style="width:50%" type="text" name="Username[]"></td>
+                        </tr>
+                        <tr>
+                            <td>Trader_Lname</td>
+                            <td><input class="form-control" style="width:50%" type="text" name="Trader_Lname[]"></td>
+                        </tr>
+                        <tr>
+                            <td>Trader_Age</td>
+                            <td><input class="form-control" style="width:50%" type="number" name="Trader_Age[]"></td>
+                        </tr>
+                        <tr>
+                            <td>Trader_Address</td>
+                            <td><input class="form-control" style="width:50%" type="text" name="Trader_Address[]"></td>
+                        </tr>
+                        <tr>
+                            <td>Trader_Phone</td>
+                            <td><input class="form-control" style="width:50%" type="number" name="Trader_Phone[]"></td>
+                        </tr>
+                    </tbody>
+                </table>
+        <div class="container-fluid input-group-addon text-center">
+            <a href="javascript:void(0)" class="btn btn-danger remove" style="width: 50%"><span
+                    class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Remove</a>
+        </div>
+    </div>
+</div>
+
+
+
+<% include ../../../partials/adminFoot %>
