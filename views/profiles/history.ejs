@@ -22,7 +22,7 @@
                         <tr class="table-danger">
                     <% } %>
                     <td><%=transaction.Transaction_Timestamp.toDateString()%></td>
-                    <td></td>
+                    <td><%=transaction.time%></td>
                     <td><%=transaction.Transaction_Type%></td>
                     <td><%=transaction.Transaction_Amount%></td>
                 </tr>
@@ -52,7 +52,7 @@
             <% orders.forEach(function(order){ %>
                 <td><%=order.Order_No%></td>
                 <td><%=order.Stock_Symbol%></td>
-                <td><%=order.Order_Time%></td>
+                <td><%=order.Order_Time.toDateString()%></td>
                 <% if(order.Order_Status == 'C'){ %>
                     <td class="text-danger"><%=order.Order_Status%></td>
                     <% }else{ %>

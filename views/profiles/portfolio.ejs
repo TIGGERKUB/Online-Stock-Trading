@@ -22,9 +22,9 @@
                 <th scope="row"><%=order.Stock_Symbol%></th>
                 <td><%=order.volume%></td>
                 <td><%=order.average_cost.toFixed(2)%></td>
-                <td><%=order.last_price%></td>
-                <td><%=order.Amount_Price%></td>
-                <td><%=order.Market_Value%></td>
+                <td><%=order.last_price.toFixed(2)%></td>
+                <td><%=order.Amount_Price.toFixed(2)%></td>
+                <td><%=order.Market_Value.toFixed(2)%></td>
 <% if(order.Unreal >= 0){ %>
                 <td class="text-success"><%=order.Unreal%></td>
                 <td class="text-success"><%=order.Per_Unreal.toFixed(2)%> %</td>
@@ -38,8 +38,8 @@
             <tr>
                 <td colspan="3"></td>
                 <td>Total</td>
-                <td><%=Total[0]%></td>
-                <td><%=Total[1]%></td>
+                <td><%=Total[0].toFixed(2)%></td>
+                <td><%=Total[1].toFixed(2)%></td>
                 <% if(Total[2]>0){ %>
                     <td class="text-success"><%=Total[2]%></td>
                     <% }else{ %>

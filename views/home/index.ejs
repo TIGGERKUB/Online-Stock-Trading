@@ -35,16 +35,16 @@
 			<% markets.forEach(function(market){ %>
 			<tr>
 				<td scope="row"><%= market.Market_Type%></td>
-				<td><%=market.last_price%></td>
+				<td><%=market.last_price.toFixed(2)%></td>
 				<% if(market.price_chage > 0){ %>
-				<td class="text-success"><%=market.price_chage%></td>
+				<td class="text-success"><%=market.price_chage.toFixed(2)%></td>
 				<% }else if(market.price_chage < 0){ %>
-				<td class="text-danger"><%=market.price_chage%></td>
+				<td class="text-danger"><%=market.price_chage.toFixed(2)%></td>
 				<% }else{ %>
-				<td><%=market.price_chage%></td>
+				<td><%=market.price_chage.toFixed(2)%></td>
 				<% } %>
 				<td><%=market.stock_volume%></td>
-				<td><%=market.market_value%></td>
+				<td><%=market.market_value.toFixed(2)%></td>
 			</tr>
 			<% }); %>
 		</tbody>
@@ -103,8 +103,8 @@
 						<tr>
 							<th scope="col">Stock Symbol</th>
 							<th scope="col">Last Price</th>
-							<th scope="col">Volume</th>
 							<th scope="col">Value</th>
+							<th scope="col">Volume</th>
 							<th scope="col">Price Change</th>
 						</tr>
 					</thead>
@@ -115,7 +115,7 @@
 								<tr>
 									<td scope="row"><%=tops[i].Stock_Symbol%></td>
 									<td><%=tops[i].last_price%></td>
-									<td><%=tops[i].stock_value%></td>
+									<td><%=tops[i].stock_value.toFixed(2)%></td>
 									<td><%=tops[i].stock_volume %></td>
 									<% if(tops[i].price_change > 0){ %>
 									<td class="text-success"><%=tops[i].price_change%></td>
@@ -131,7 +131,7 @@
 								<tr>
 									<td scope="row"><%=tops[i].Stock_Symbol%></td>
 									<td><%=tops[i].last_price%></td>
-									<td><%=tops[i].stock_value%></td>
+									<td><%=tops[i].stock_value.toFixed(2)%></td>
 									<td><%=tops[i].stock_volume %></td>
 									<% if(tops[i].price_change > 0){ %>
 									<td class="text-success"><%=tops[i].price_change%></td>
@@ -145,11 +145,11 @@
 							<% } %>
 						<% }else{ %>
 							<% if (tops.length >= 20) { %>
-								<% for(var i = 0;i<10; i++) { %>
+								<% for(var i = 0;i<20; i++) { %>
 								<tr>
 									<td scope="row"><%=tops[i].Stock_Symbol%></td>
 									<td><%=tops[i].last_price%></td>
-									<td><%=tops[i].stock_value%></td>
+									<td><%=tops[i].stock_value.toFixed(2)%></td>
 									<td><%=tops[i].stock_volume %></td>
 									<% if(tops[i].price_change > 0){ %>
 									<td class="text-success"><%=tops[i].price_change%></td>
@@ -165,7 +165,7 @@
 								<tr>
 									<td scope="row"><%=tops[i].Stock_Symbol%></td>
 									<td><%=tops[i].last_price%></td>
-									<td><%=tops[i].stock_value%></td>
+									<td><%=tops[i].stock_value.toFixed(2)%></td>
 									<td><%=tops[i].stock_volume %></td>
 									<% if(tops[i].price_change > 0){ %>
 									<td class="text-success"><%=tops[i].price_change%></td>

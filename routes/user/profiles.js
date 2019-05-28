@@ -160,12 +160,13 @@ router.post("/transaction", function (req, res) {
 
 
 router.get("/history", function (req, res) {
-    var findTransaction = "SELECT * FROM transaction WHERE Account_ID = '" + req.session.currentAccount + "'";
+    var findTransaction = "SELECT Transaction_ID,Transaction_Type,Transaction_Timestamp,TIME(Transaction_Timestamp) as time ,Transaction_Amount FROM transaction WHERE Account_ID = '" + req.session.currentAccount + "'";
     var findOrder = "SELECT * FROM stock_order WHERE Order_Status !='Q' AND Account_ID = '" + req.session.currentAccount + "'";
     connection.query(findTransaction, function (err, foundfindTransactions) {
         if (err) throw err;
         connection.query(findOrder, function (err, foundOrder) {
             if (err) throw err;
+            console.log(foundfindTransactions);
             res.render("profiles/history", {
                 transactions: foundfindTransactions,
                 orders: foundOrder,
