@@ -24,7 +24,7 @@
     "passport-local": "^1.0.0",
     "passport-local-mysql": "^5.0.10",
     "plotly": "^1.0.6",
-    "sequelize": "^5.7.6"
+    "sequelize": "^5.15.1"
   },
   "description": ""
 }
