@@ -10,7 +10,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "bootstrap-select": "^1.13.10",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "connect-flash": "^0.1.1",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
